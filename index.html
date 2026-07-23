@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NFC 员工打卡点探索</title>
+  <title>举手文化成果打卡寻宝-1</title>
 
   <style>
     * {
@@ -19,7 +19,7 @@
     }
 
     .container {
-      width: min(1100px, 94vw);
+      width: min(1180px, 94vw);
       margin: 24px auto 50px;
     }
 
@@ -33,24 +33,34 @@
 
     .image-box {
       width: 100%;
-      min-height: 240px;
-      background: linear-gradient(135deg, #e8fff0, #ffffff);
+      background: #101010;
       display: flex;
       justify-content: center;
       align-items: center;
       border-bottom: 1px solid #d9e7df;
-      color: #00a651;
-      font-size: 30px;
-      font-weight: bold;
-      text-align: center;
-      padding: 40px 20px;
+      overflow: hidden;
     }
 
     .image-box img {
       width: 100%;
-      max-height: 520px;
+      max-height: 620px;
       object-fit: contain;
       display: block;
+      background: #101010;
+    }
+
+    .image-fallback {
+      min-height: 260px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #111111, #053b1e);
+      color: #00c864;
+      font-size: 30px;
+      font-weight: 900;
+      text-align: center;
+      padding: 40px 20px;
     }
 
     .hero-content {
@@ -63,12 +73,13 @@
 
     h1 {
       font-size: clamp(28px, 4vw, 44px);
-      color: #11412a;
+      color: #06422a;
       margin-bottom: 12px;
+      line-height: 1.2;
     }
 
     .subtitle {
-      color: #6b7280;
+      color: #4b5563;
       line-height: 1.7;
       font-size: 15px;
     }
@@ -80,7 +91,7 @@
       border-radius: 999px;
       background: #e9fff1;
       color: #067a3f;
-      font-weight: 800;
+      font-weight: 900;
       border: 1px solid #bfeacd;
     }
 
@@ -95,6 +106,7 @@
       font-weight: 900;
       font-size: 18px;
       margin-bottom: 12px;
+      color: #0f3f2b;
     }
 
     .name-row {
@@ -191,74 +203,123 @@
     }
 
     .section-title {
-      margin-bottom: 14px;
+      margin-bottom: 18px;
     }
 
     .section-title h2 {
-      font-size: 24px;
-      color: #123d29;
+      font-size: 26px;
+      color: #06422a;
+      margin-bottom: 6px;
     }
 
     .section-title p {
       color: #6b7280;
       font-size: 14px;
-      margin-top: 6px;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+      gap: 22px;
+      align-items: center;
     }
 
     .point {
-      height: 112px;
-      border-radius: 20px;
-      background: linear-gradient(145deg, #eef1ef, #d7dfdb);
-      color: #79837e;
+      position: relative;
+      width: 125px;
+      height: 125px;
+      margin: 0 auto;
+      border-radius: 24px;
+      cursor: default;
+      transition: 0.25s ease;
+      filter: grayscale(100%) opacity(0.45);
+      transform: scale(0.96);
+    }
+
+    .point-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
+    }
+
+    .point img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .point-number {
+      position: absolute;
+      left: 50%;
+      top: 48%;
+      transform: translate(-50%, -50%);
+      font-size: 38px;
+      font-weight: 1000;
+      color: #ffffff;
+      text-shadow:
+        0 2px 3px rgba(0, 0, 0, 0.55),
+        0 0 8px rgba(0, 0, 0, 0.5);
+      z-index: 2;
+      line-height: 1;
+    }
+
+    .point-label {
+      position: absolute;
+      left: 50%;
+      bottom: 9px;
+      transform: translateX(-50%);
+      font-size: 12px;
       font-weight: 900;
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
-      border: 1px solid #cbd5d1;
-      position: relative;
-      transition: 0.25s;
-    }
-
-    .point .number {
-      font-size: 34px;
-    }
-
-    .point .label {
-      font-size: 13px;
+      color: #ffffff;
+      text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.65),
+        0 0 6px rgba(0, 0, 0, 0.55);
+      white-space: nowrap;
+      z-index: 2;
     }
 
     .point.active {
-      color: white;
-      background: radial-gradient(circle at 76% 24%, #fff5a7 0%, #59dc7f 28%, #00a651 68%, #07823f 100%);
-      border-color: #75de99;
-      box-shadow: 0 0 28px rgba(0, 166, 81, 0.48);
-      transform: translateY(-2px);
+      filter: grayscale(0%) opacity(1);
+      transform: scale(1.05);
+      animation: glowPulse 1.8s infinite;
     }
 
     .point.active::after {
       content: "已点亮";
       position: absolute;
-      right: 8px;
-      top: 8px;
+      right: -6px;
+      top: -6px;
       font-size: 11px;
-      padding: 4px 7px;
+      padding: 5px 8px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.25);
+      color: white;
+      background: #00a651;
+      box-shadow: 0 5px 14px rgba(0, 166, 81, 0.35);
+      z-index: 3;
+      font-weight: 900;
+    }
+
+    @keyframes glowPulse {
+      0% {
+        filter: grayscale(0%) opacity(1) drop-shadow(0 0 8px rgba(0, 166, 81, 0.45));
+      }
+      50% {
+        filter: grayscale(0%) opacity(1) drop-shadow(0 0 20px rgba(0, 166, 81, 0.85));
+      }
+      100% {
+        filter: grayscale(0%) opacity(1) drop-shadow(0 0 8px rgba(0, 166, 81, 0.45));
+      }
     }
 
     .actions {
       display: flex;
       justify-content: center;
       gap: 10px;
-      margin-top: 24px;
+      margin-top: 28px;
       flex-wrap: wrap;
     }
 
@@ -272,24 +333,6 @@
       background: #fff1f2;
       color: #be123c;
       border: 1px solid #fecdd3;
-    }
-
-    .help {
-      margin-top: 20px;
-      background: white;
-      border: 1px dashed #b9dec6;
-      border-radius: 18px;
-      padding: 16px;
-      color: #6b7280;
-      line-height: 1.8;
-      font-size: 13px;
-    }
-
-    code {
-      background: #f1f5f9;
-      color: #0f172a;
-      border-radius: 6px;
-      padding: 2px 5px;
     }
 
     .toast {
@@ -312,9 +355,75 @@
       transform: translateX(-50%) translateY(0);
     }
 
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      display: none;
+      z-index: 80;
+    }
+
+    .confetti.show {
+      display: block;
+    }
+
+    .confetti i {
+      position: absolute;
+      top: -20px;
+      width: 10px;
+      height: 16px;
+      animation: fall 2.5s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(105vh) rotate(720deg);
+        opacity: 0.85;
+      }
+    }
+
     @media (max-width: 800px) {
       .hero-content {
         grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      .point {
+        width: 86px;
+        height: 86px;
+        border-radius: 18px;
+      }
+
+      .point-number {
+        font-size: 27px;
+      }
+
+      .point-label {
+        font-size: 10px;
+        bottom: 5px;
+      }
+
+      .point.active::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .container {
+        width: 96vw;
+        margin-top: 12px;
+      }
+
+      .hero {
+        border-radius: 18px;
+      }
+
+      .hero-content {
+        padding: 18px;
       }
 
       .grid {
@@ -323,16 +432,17 @@
       }
 
       .point {
-        height: 86px;
-        border-radius: 16px;
+        width: 76px;
+        height: 76px;
       }
 
-      .point .number {
-        font-size: 26px;
+      .point-number {
+        font-size: 24px;
       }
 
-      .point .label {
-        font-size: 11px;
+      input,
+      button {
+        width: 100%;
       }
     }
   </style>
@@ -340,17 +450,20 @@
 
 <body>
   <div class="toast" id="toast"></div>
+  <div class="confetti" id="confetti"></div>
 
   <main class="container">
     <section class="hero">
-      <div class="image-box" id="imageBox">
-        building.pngstyle.display='block';">
-        <div id="imageFallback" style="display:none;">NFC 员工打卡活动</div>
+      <div class="image-box">
+        AM打卡点1.jpgstyle.display='flex';">
+        <div class="image-fallback" id="bannerFallback" style="display:none;">
+          举手文化成果打卡寻宝
+        </div>
       </div>
 
       <div class="hero-content">
         <div>
-          <h1>NFC 员工打卡点探索</h1>
+          <h1>举手文化成果打卡寻宝-1</h1>
           <p class="subtitle">
             每个现场打卡点都有自己的编号。员工用手机 NFC 触碰对应点位后，网页会识别当前点位编号；输入姓名后，该员工已找到的编号会持续点亮。
           </p>
@@ -392,14 +505,6 @@
       <div class="actions">
         <button class="secondary" id="changeNameBtn">更换姓名</button>
         <button class="danger" id="clearBtn">清空当前姓名记录</button>
-      </div>
-
-      <div class="help">
-        <strong>NFC 标签写入方式：</strong><br>
-        打卡点 1：<code>https://xiaohan-tiantian.github.io/nfc-checkin/?point=1</code><br>
-        打卡点 2：<code>https://xiaohan-tiantian.github.io/nfc-checkin/?point=2</code><br>
-        打卡点 3：<code>https://xiaohan-tiantian.github.io/nfc-checkin/?point=3</code><br>
-        一直到打卡点 20：<code>https://xiaohan-tiantian.github.io/nfc-checkin/?point=20</code>
       </div>
     </section>
   </main>
@@ -468,9 +573,14 @@
       for (let i = 1; i <= TOTAL_POINTS; i++) {
         const card = document.createElement("div");
         card.className = activePoints.includes(i) ? "point active" : "point";
+
         card.innerHTML =
-          '<div class="number">' + i + '</div>' +
-          '<div class="label">打卡点</div>';
+          '<div class="point-inner">' +
+            '举手2.0图标.jpg' +
+            '<div class="point-number">' + i + '</div>' +
+            '<div class="point-label">打卡点</div>' +
+          '</div>';
+
         grid.appendChild(card);
       }
     }
@@ -535,6 +645,10 @@
 
       renderByName(name);
       toast(message);
+
+      if (getProgress(name).length === TOTAL_POINTS) {
+        celebrate();
+      }
     }
 
     function clearCurrentNameProgress() {
@@ -548,6 +662,34 @@
       localStorage.removeItem(storageKeyForName(name));
       renderByName(name);
       toast("已清空 " + name + " 的打卡记录");
+    }
+
+    function celebrate() {
+      const c = el("confetti");
+
+      if (c.classList.contains("show")) return;
+
+      c.innerHTML = "";
+      c.classList.add("show");
+
+      const colors = ["#00A651", "#6ee787", "#ffe680", "#38bdf8", "#fb7185"];
+
+      for (let i = 0; i < 90; i++) {
+        const piece = document.createElement("i");
+
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDelay = Math.random() * 0.8 + "s";
+        piece.style.transform = "rotate(" + Math.random() * 180 + "deg)";
+
+        c.appendChild(piece);
+      }
+
+      toast("🎉 恭喜，20 个打卡点已全部完成！");
+
+      setTimeout(function() {
+        c.classList.remove("show");
+      }, 3400);
     }
 
     function init() {
