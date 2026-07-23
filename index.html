@@ -204,22 +204,26 @@
       font-size: 14px;
     }
 
+    /* 核心修改1：桌面端一行10列，2行铺满20个 */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
-      gap: 22px;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 16px;
       align-items: center;
     }
 
+    /* 核心修改2：移除灰色背景方框，缩小尺寸 */
     .point {
       position: relative;
-      width: 125px;
-      height: 125px;
+      width: 100%;
+      aspect-ratio: 1 / 1;
       margin: 0 auto;
       border-radius: 24px;
       transition: 0.25s ease;
       filter: grayscale(100%) opacity(0.45);
       transform: scale(0.96);
+      /* 删除原来黑色/灰色背景 */
+      background: transparent;
     }
 
     .point-icon {
@@ -365,6 +369,7 @@
       }
     }
 
+    /* 平板适配：小于800px改为4列 */
     @media (max-width: 800px) {
       .hero-content {
         grid-template-columns: 1fr;
@@ -373,12 +378,6 @@
       .grid {
         grid-template-columns: repeat(4, 1fr);
         gap: 14px;
-      }
-
-      .point {
-        width: 86px;
-        height: 86px;
-        border-radius: 18px;
       }
 
       .point-number {
@@ -395,6 +394,7 @@
       }
     }
 
+    /* 手机小屏适配 */
     @media (max-width: 430px) {
       .container {
         width: 96vw;
@@ -412,11 +412,6 @@
       .grid {
         grid-template-columns: repeat(4, 1fr);
         gap: 10px;
-      }
-
-      .point {
-        width: 76px;
-        height: 76px;
       }
 
       .point-number {
@@ -437,7 +432,6 @@
 
   <main class="container">
     <section class="hero">
-      <!-- 修复点：添加img标签加载banner1.jpg -->
       <div class="image-box">
         <img src="./banner1.jpg" alt="活动横幅">
       </div>
