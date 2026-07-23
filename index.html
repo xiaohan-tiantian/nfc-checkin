@@ -33,7 +33,6 @@
 
     .image-box {
       width: 100%;
-      min-height: 260px;
       background: #101010;
       display: flex;
       justify-content: center;
@@ -44,24 +43,10 @@
 
     .image-box img {
       width: 100%;
-      max-height: 620px;
+      max-height: 650px;
       object-fit: contain;
       display: block;
       background: #101010;
-    }
-
-    .image-fallback {
-      min-height: 260px;
-      width: 100%;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #111111, #053b1e);
-      color: #00c864;
-      font-size: 30px;
-      font-weight: 900;
-      text-align: center;
-      padding: 40px 20px;
     }
 
     .hero-content {
@@ -125,6 +110,7 @@
       padding: 0 14px;
       outline: none;
       font-size: 16px;
+      background: #ffffff;
     }
 
     input:focus {
@@ -449,11 +435,7 @@
   <main class="container">
     <section class="hero">
       <div class="image-box">
-        ./banner.jpgstyle.display='flex';"
-        >
-        <div class="image-fallback" id="bannerFallback">
-          举手文化成果打卡寻宝
-        </div>
+        ./banner.jpg
       </div>
 
       <div class="hero-content">
