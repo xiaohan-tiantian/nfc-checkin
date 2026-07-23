@@ -285,13 +285,16 @@
 
     @keyframes glowPulse {
       0% {
-        filter: grayscale(0%) opacity(1) drop-shadow(0 0 8px rgba(0, 166, 81, 0.45));
+        filter: grayscale(0%) opacity(1)
+          drop-shadow(0 0 8px rgba(0, 166, 81, 0.45));
       }
       50% {
-        filter: grayscale(0%) opacity(1) drop-shadow(0 0 20px rgba(0, 166, 81, 0.85));
+        filter: grayscale(0%) opacity(1)
+          drop-shadow(0 0 20px rgba(0, 166, 81, 0.85));
       }
       100% {
-        filter: grayscale(0%) opacity(1) drop-shadow(0 0 8px rgba(0, 166, 81, 0.45));
+        filter: grayscale(0%) opacity(1)
+          drop-shadow(0 0 8px rgba(0, 166, 81, 0.45));
       }
     }
 
@@ -435,7 +438,7 @@
   <main class="container">
     <section class="hero">
       <div class="image-box">
-        ./banner.jpg
+        ./banner1.jpg
       </div>
 
       <div class="hero-content">
@@ -464,7 +467,9 @@
     <section class="progress-card">
       <div class="progress-head">
         <div>打卡进度</div>
-        <div class="progress-num"><span id="doneCount">0</span>/20</div>
+        <div class="progress-num">
+          <span id="doneCount">0</span>/20
+        </div>
       </div>
       <div class="progress-track">
         <div class="progress-bar" id="progressBar"></div>
