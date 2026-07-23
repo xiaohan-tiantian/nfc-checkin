@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NFC 员工打卡点探索</title>
 
   <style>
@@ -20,7 +20,7 @@
 
     .container {
       width: min(1100px, 94vw);
-      margin: 20px auto 50px;
+      margin: 24px auto 50px;
     }
 
     .hero {
@@ -33,12 +33,17 @@
 
     .image-box {
       width: 100%;
-      min-height: 220px;
+      min-height: 240px;
       background: linear-gradient(135deg, #e8fff0, #ffffff);
       display: flex;
       justify-content: center;
       align-items: center;
       border-bottom: 1px solid #d9e7df;
+      color: #00a651;
+      font-size: 30px;
+      font-weight: bold;
+      text-align: center;
+      padding: 40px 20px;
     }
 
     .image-box img {
@@ -46,14 +51,6 @@
       max-height: 520px;
       object-fit: contain;
       display: block;
-    }
-
-    .image-fallback {
-      padding: 60px 20px;
-      text-align: center;
-      color: #00a651;
-      font-size: 30px;
-      font-weight: bold;
     }
 
     .hero-content {
@@ -217,4 +214,389 @@
     .point {
       height: 112px;
       border-radius: 20px;
-      background
+      background: linear-gradient(145deg, #eef1ef, #d7dfdb);
+      color: #79837e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-weight: 900;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+      border: 1px solid #cbd5d1;
+      position: relative;
+      transition: 0.25s;
+    }
+
+    .point .number {
+      font-size: 34px;
+    }
+
+    .point .label {
+      font-size: 13px;
+    }
+
+    .point.active {
+      color: white;
+      background: radial-gradient(circle at 76% 24%, #fff5a7 0%, #59dc7f 28%, #00a651 68%, #07823f 100%);
+      border-color: #75de99;
+      box-shadow: 0 0 28px rgba(0, 166, 81, 0.48);
+      transform: translateY(-2px);
+    }
+
+    .point.active::after {
+      content: "已点亮";
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      font-size: 11px;
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.25);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .secondary {
+      background: #eef7f1;
+      color: #067a3f;
+      border: 1px solid #c8e9d4;
+    }
+
+    .danger {
+      background: #fff1f2;
+      color: #be123c;
+      border: 1px solid #fecdd3;
+    }
+
+    .help {
+      margin-top: 20px;
+      background: white;
+      border: 1px dashed #b9dec6;
+      border-radius: 18px;
+      padding: 16px;
+      color: #6b7280;
+      line-height: 1.8;
+      font-size: 13px;
+    }
+
+    code {
+      background: #f1f5f9;
+      color: #0f172a;
+      border-radius: 6px;
+      padding: 2px 5px;
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-120px);
+      background: #111827;
+      color: white;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 900;
+      transition: 0.3s;
+      z-index: 99;
+      max-width: 92vw;
+      text-align: center;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 800px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      .point {
+        height: 86px;
+        border-radius: 16px;
+      }
+
+      .point .number {
+        font-size: 26px;
+      }
+
+      .point .label {
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="toast" id="toast"></div>
+
+  <main class="container">
+    <section class="hero">
+      <div class="image-box" id="imageBox">
+        building.pngstyle.display='block';">
+        <div id="imageFallback" style="display:none;">NFC 员工打卡活动</div>
+      </div>
+
+      <div class="hero-content">
+        <div>
+          <h1>NFC 员工打卡点探索</h1>
+          <p class="subtitle">
+            每个现场打卡点都有自己的编号。员工用手机 NFC 触碰对应点位后，网页会识别当前点位编号；输入姓名后，该员工已找到的编号会持续点亮。
+          </p>
+          <div class="current-chip" id="currentChip">当前 NFC 点位：未识别</div>
+        </div>
+
+        <div class="login-card">
+          <div class="login-title">请输入员工姓名</div>
+          <div class="name-row">
+            <input id="employeeName" type="text" maxlength="30" placeholder="例如：张三">
+            <button id="submitBtn">确认打卡</button>
+          </div>
+          <div class="welcome" id="welcomeText"></div>
+          <div class="notice">
+            同一位员工请每次输入相同姓名；打卡进度会保存在该员工自己的手机浏览器中。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="progress-card">
+      <div class="progress-head">
+        <div>打卡进度</div>
+        <div class="progress-num"><span id="doneCount">0</span>/20</div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <h2>20 个打卡点</h2>
+        <p>已经找到的编号会变亮，未找到的编号保持暗色。</p>
+      </div>
+
+      <div class="grid" id="pointsGrid"></div>
+
+      <div class="actions">
+        <button class="secondary" id="changeNameBtn">更换姓名</button>
+        <button class="danger" id="clearBtn">清空当前姓名记录</button>
+      </div>
+
+      <div class="help">
+        <strong>NFC 标签写入方式：</strong><br>
+        打卡点 1：<code>https://xiaohan-tiantian.github.io/nfc-checkin/?point=1</code><br>
+        打卡点 2：<code>https://xiaohan-tiantian.github.io/nfc-checkin/?point=2</code><br>
+        打卡点 3：<code>https://xiaohan-tiantian.github.io/nfc-checkin/?point=3</code><br>
+        一直到打卡点 20：<code>https://xiaohan-tiantian.github.io/nfc-checkin/?point=20</code>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const TOTAL_POINTS = 20;
+
+    const qs = new URLSearchParams(window.location.search);
+    const currentPoint = Number(qs.get("point"));
+    const validCurrentPoint =
+      Number.isInteger(currentPoint) &&
+      currentPoint >= 1 &&
+      currentPoint <= TOTAL_POINTS;
+
+    const el = function(id) {
+      return document.getElementById(id);
+    };
+
+    function normalizeName(name) {
+      return name.trim().replace(/\s+/g, " ").toLowerCase();
+    }
+
+    function storageKeyForName(name) {
+      return "nfc_checkin_progress_" + encodeURIComponent(normalizeName(name));
+    }
+
+    function getProgress(name) {
+      if (!name) return [];
+
+      try {
+        const raw = localStorage.getItem(storageKeyForName(name));
+        const arr = raw ? JSON.parse(raw) : [];
+
+        if (!Array.isArray(arr)) return [];
+
+        return arr.filter(function(n) {
+          return Number.isInteger(n) && n >= 1 && n <= TOTAL_POINTS;
+        });
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveProgress(name, points) {
+      const unique = Array.from(new Set(points)).sort(function(a, b) {
+        return a - b;
+      });
+
+      localStorage.setItem(storageKeyForName(name), JSON.stringify(unique));
+      localStorage.setItem("nfc_checkin_last_name", name.trim());
+    }
+
+    function toast(message) {
+      el("toast").textContent = message;
+      el("toast").classList.add("show");
+
+      setTimeout(function() {
+        el("toast").classList.remove("show");
+      }, 2300);
+    }
+
+    function renderPoints(activePoints) {
+      const grid = el("pointsGrid");
+      grid.innerHTML = "";
+
+      for (let i = 1; i <= TOTAL_POINTS; i++) {
+        const card = document.createElement("div");
+        card.className = activePoints.includes(i) ? "point active" : "point";
+        card.innerHTML =
+          '<div class="number">' + i + '</div>' +
+          '<div class="label">打卡点</div>';
+        grid.appendChild(card);
+      }
+    }
+
+    function renderProgress(activePoints) {
+      const count = activePoints.length;
+      el("doneCount").textContent = count;
+      el("progressBar").style.width = (count / TOTAL_POINTS) * 100 + "%";
+    }
+
+    function displayName(name) {
+      return name.replace(/[&<>"']/g, function(ch) {
+        return {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        }[ch];
+      });
+    }
+
+    function renderByName(name) {
+      const points = getProgress(name);
+
+      renderPoints(points);
+      renderProgress(points);
+
+      if (name) {
+        el("welcomeText").style.display = "block";
+        el("welcomeText").innerHTML =
+          "当前员工：<span>" + displayName(name) + "</span>";
+      } else {
+        el("welcomeText").style.display = "none";
+      }
+    }
+
+    function submitCheckin() {
+      const name = el("employeeName").value.trim();
+
+      if (!name) {
+        toast("请先输入员工姓名");
+        return;
+      }
+
+      let points = getProgress(name);
+      let message = "";
+
+      if (validCurrentPoint) {
+        if (!points.includes(currentPoint)) {
+          points.push(currentPoint);
+          saveProgress(name, points);
+          message = "✅ " + name + " 已点亮打卡点 " + currentPoint;
+        } else {
+          saveProgress(name, points);
+          message = "打卡点 " + currentPoint + " 已经点亮过";
+        }
+      } else {
+        saveProgress(name, points);
+        message = "已显示 " + name + " 的打卡进度";
+      }
+
+      renderByName(name);
+      toast(message);
+    }
+
+    function clearCurrentNameProgress() {
+      const name = el("employeeName").value.trim();
+
+      if (!name) {
+        toast("请先输入要清空记录的姓名");
+        return;
+      }
+
+      localStorage.removeItem(storageKeyForName(name));
+      renderByName(name);
+      toast("已清空 " + name + " 的打卡记录");
+    }
+
+    function init() {
+      if (validCurrentPoint) {
+        el("currentChip").textContent = "当前 NFC 点位：" + currentPoint;
+      } else {
+        el("currentChip").textContent = "当前 NFC 点位：未识别";
+      }
+
+      renderPoints([]);
+      renderProgress([]);
+
+      const lastName = localStorage.getItem("nfc_checkin_last_name") || "";
+
+      if (lastName) {
+        el("employeeName").value = lastName;
+        renderByName(lastName);
+      }
+
+      if (validCurrentPoint && lastName) {
+        let points = getProgress(lastName);
+
+        if (!points.includes(currentPoint)) {
+          points.push(currentPoint);
+          saveProgress(lastName, points);
+          renderByName(lastName);
+          toast("✅ 已自动点亮打卡点 " + currentPoint);
+        }
+      }
+    }
+
+    el("submitBtn").addEventListener("click", submitCheckin);
+
+    el("employeeName").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        submitCheckin();
+      }
+    });
+
+    el("changeNameBtn").addEventListener("click", function() {
+      el("employeeName").value = "";
+      el("employeeName").focus();
+      renderByName("");
+      toast("请输入新的员工姓名");
+    });
+
+    el("clearBtn").addEventListener("click", clearCurrentNameProgress);
+
+    init();
+  </script>
+</body>
+</html>
