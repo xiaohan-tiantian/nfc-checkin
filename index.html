@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>举手文化成果打卡寻宝-1</title>
 
   <style>
@@ -39,6 +39,7 @@
       align-items: center;
       border-bottom: 1px solid #d9e7df;
       overflow: hidden;
+      min-height: 160px;
     }
 
     .image-box img {
@@ -47,6 +48,15 @@
       object-fit: contain;
       display: block;
       background: #101010;
+      /* 图片加载失败兜底 */
+      min-height: 160px;
+    }
+    .image-box img:not([src]), .image-box img[src=""] {
+      content: "图片缺失，请放置banner1.jpg";
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
     }
 
     .hero-content {
@@ -135,6 +145,9 @@
       background: #067a3f;
       transform: translateY(-1px);
     }
+    button:active {
+      transform: translateY(0);
+    }
 
     .welcome {
       display: none;
@@ -204,7 +217,7 @@
       font-size: 14px;
     }
 
-    /* 核心修改1：桌面端一行10列，2行铺满20个 */
+    /* 桌面端一行10列 */
     .grid {
       display: grid;
       grid-template-columns: repeat(10, 1fr);
@@ -212,17 +225,16 @@
       align-items: center;
     }
 
-    /* 核心修改2：移除灰色背景方框，缩小尺寸 */
     .point {
       position: relative;
       width: 100%;
       aspect-ratio: 1 / 1;
+      min-height: 70px;
       margin: 0 auto;
       border-radius: 24px;
       transition: 0.25s ease;
       filter: grayscale(100%) opacity(0.45);
       transform: scale(0.96);
-      /* 删除原来黑色/灰色背景 */
       background: transparent;
     }
 
@@ -388,6 +400,11 @@
         font-size: 10px;
         bottom: 5px;
       }
+      /* 移动端替代右上角标签 */
+      .point.active .point-label::after {
+        content: " ✓";
+        color: #00ff94;
+      }
 
       .point.active::after {
         display: none;
@@ -422,6 +439,13 @@
       button {
         width: 100%;
       }
+      .name-row {
+        gap: 8px;
+      }
+      .actions button {
+        flex: 1;
+        min-width: 130px;
+      }
     }
   </style>
 </head>
@@ -433,7 +457,7 @@
   <main class="container">
     <section class="hero">
       <div class="image-box">
-        <img src="./banner1.jpg" alt="活动横幅">
+        <img src="./banner1.jpg" alt="活动横幅" loading="lazy">
       </div>
 
       <div class="hero-content">
@@ -448,7 +472,7 @@
         <div class="login-card">
           <div class="login-title">请输入员工姓名</div>
           <div class="name-row">
-            <input id="employeeName" type="text" maxlength="30" placeholder="例如：张三">
+            <input id="employeeName" type="text" maxlength="30" placeholder="例如：张三" autocomplete="off">
             <button id="submitBtn">确认打卡</button>
           </div>
           <div class="welcome" id="welcomeText"></div>
@@ -488,6 +512,7 @@
 
   <script>
     const TOTAL_POINTS = 20;
+    let submitLock = false; // 提交防抖锁
 
     const qs = new URLSearchParams(window.location.search);
     const currentPoint = Number(qs.get("point"));
@@ -500,8 +525,9 @@
       return document.getElementById(id);
     };
 
+    // 优化姓名清洗：去除多空格、全角空格
     function normalizeName(name) {
-      return name.trim().replace(/\s+/g, " ").toLowerCase();
+      return name.trim().replace(/\s+/g, "").toLowerCase();
     }
 
     function storageKeyForName(name) {
@@ -510,26 +536,21 @@
 
     function getProgress(name) {
       if (!name) return [];
-
       try {
         const raw = localStorage.getItem(storageKeyForName(name));
         const arr = raw ? JSON.parse(raw) : [];
-
         if (!Array.isArray(arr)) return [];
-
         return arr.filter(function(n) {
           return Number.isInteger(n) && n >= 1 && n <= TOTAL_POINTS;
         });
       } catch (e) {
+        console.error("读取存储失败", e);
         return [];
       }
     }
 
     function saveProgress(name, points) {
-      const unique = Array.from(new Set(points)).sort(function(a, b) {
-        return a - b;
-      });
-
+      const unique = Array.from(new Set(points)).sort((a, b) => a - b);
       localStorage.setItem(storageKeyForName(name), JSON.stringify(unique));
       localStorage.setItem("nfc_checkin_last_name", name.trim());
     }
@@ -537,26 +558,20 @@
     function toast(message) {
       el("toast").textContent = message;
       el("toast").classList.add("show");
-
-      setTimeout(function() {
-        el("toast").classList.remove("show");
-      }, 2300);
+      setTimeout(() => el("toast").classList.remove("show"), 2300);
     }
 
     function renderPoints(activePoints) {
       const grid = el("pointsGrid");
       grid.innerHTML = "";
-
       for (let i = 1; i <= TOTAL_POINTS; i++) {
         const card = document.createElement("div");
         card.className = activePoints.includes(i) ? "point active" : "point";
-
         card.innerHTML =
           '<div class="point-icon">' +
             '<div class="point-number">' + i + '</div>' +
             '<div class="point-label">打卡点</div>' +
           '</div>';
-
         grid.appendChild(card);
       }
     }
@@ -564,27 +579,26 @@
     function renderProgress(activePoints) {
       const count = activePoints.length;
       el("doneCount").textContent = count;
-      el("progressBar").style.width = (count / TOTAL_POINTS) * 100 + "%";
+      // 取整消除小数毛刺
+      const percent = Math.round((count / TOTAL_POINTS) * 100);
+      el("progressBar").style.width = percent + "%";
     }
 
+    // XSS转义
     function displayName(name) {
-      return name.replace(/[&<>"']/g, function(ch) {
-        return {
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;"
-        }[ch];
-      });
+      return name.replace(/[&<>"']/g, ch => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[ch]));
     }
 
     function renderByName(name) {
       const points = getProgress(name);
-
       renderPoints(points);
       renderProgress(points);
-
       if (name) {
         el("welcomeText").style.display = "block";
         el("welcomeText").innerHTML =
@@ -594,13 +608,15 @@
       }
     }
 
-    function submitCheckin() {
+    async function submitCheckin() {
+      // 防抖拦截重复点击
+      if (submitLock) return;
       const name = el("employeeName").value.trim();
-
       if (!name) {
         toast("请先输入员工姓名");
         return;
       }
+      submitLock = true;
 
       let points = getProgress(name);
       let message = "";
@@ -611,11 +627,9 @@
           saveProgress(name, points);
           message = "✅ " + name + " 已点亮打卡点 " + currentPoint;
         } else {
-          saveProgress(name, points);
           message = "打卡点 " + currentPoint + " 已经点亮过";
         }
       } else {
-        saveProgress(name, points);
         message = "已显示 " + name + " 的打卡进度";
       }
 
@@ -625,16 +639,16 @@
       if (getProgress(name).length === TOTAL_POINTS) {
         celebrate();
       }
+      // 200ms解锁
+      setTimeout(() => submitLock = false, 200);
     }
 
     function clearCurrentNameProgress() {
       const name = el("employeeName").value.trim();
-
       if (!name) {
         toast("请先输入要清空记录的姓名");
         return;
       }
-
       localStorage.removeItem(storageKeyForName(name));
       renderByName(name);
       toast("已清空 " + name + " 的打卡记录");
@@ -642,29 +656,24 @@
 
     function celebrate() {
       const c = el("confetti");
-
       if (c.classList.contains("show")) return;
-
       c.innerHTML = "";
       c.classList.add("show");
 
       const colors = ["#00A651", "#6ee787", "#ffe680", "#38bdf8", "#fb7185"];
-
       for (let i = 0; i < 90; i++) {
         const piece = document.createElement("i");
-
         piece.style.left = Math.random() * 100 + "vw";
         piece.style.background = colors[Math.floor(Math.random() * colors.length)];
         piece.style.animationDelay = Math.random() * 0.8 + "s";
         piece.style.transform = "rotate(" + Math.random() * 180 + "deg)";
-
         c.appendChild(piece);
       }
 
       toast("🎉 恭喜，20 个打卡点已全部完成！");
-
-      setTimeout(function() {
+      setTimeout(() => {
         c.classList.remove("show");
+        c.innerHTML = ""; // 清空DOM，释放内存
       }, 3400);
     }
 
@@ -677,7 +686,6 @@
 
       renderPoints([]);
       renderProgress([]);
-
       const lastName = localStorage.getItem("nfc_checkin_last_name") || "";
 
       if (lastName) {
@@ -685,9 +693,9 @@
         renderByName(lastName);
       }
 
+      // 修复：刷新页面重复添加点位bug，仅首次未存在时添加
       if (validCurrentPoint && lastName) {
         let points = getProgress(lastName);
-
         if (!points.includes(currentPoint)) {
           points.push(currentPoint);
           saveProgress(lastName, points);
@@ -697,23 +705,20 @@
       }
     }
 
+    // 绑定事件
     el("submitBtn").addEventListener("click", submitCheckin);
-
     el("employeeName").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        submitCheckin();
-      }
+      if (e.key === "Enter") submitCheckin();
     });
-
     el("changeNameBtn").addEventListener("click", function() {
       el("employeeName").value = "";
       el("employeeName").focus();
       renderByName("");
       toast("请输入新的员工姓名");
     });
-
     el("clearBtn").addEventListener("click", clearCurrentNameProgress);
 
+    // 页面初始化
     init();
   </script>
 </body>
