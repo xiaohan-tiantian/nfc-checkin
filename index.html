@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>举手文化成果打卡寻宝-1</title>
+  <title>举手文化成果打卡寻宝SSAM-1</title>
 
   <style>
     * {
@@ -462,9 +462,9 @@
 
       <div class="hero-content">
         <div>
-          <h1>举手文化成果打卡寻宝-1</h1>
+          <h1>举手文化成果打卡寻宝SSAM-1</h1>
           <p class="subtitle">
-            每个现场打卡点都有自己的编号。员工用手机 NFC 触碰对应点位后，网页会识别当前点位编号；输入姓名后，该员工已找到的编号会持续点亮。
+            每个现场打卡点都有自己的编号。员工用手机 NFC 触碰对应点位SSAM-1后，网页会识别当前点位编号；输入姓名后，该员工已找到的编号会持续点亮。
           </p>
           <div class="current-chip" id="currentChip">当前 NFC 点位：未识别</div>
         </div>
@@ -625,9 +625,9 @@
         if (!points.includes(currentPoint)) {
           points.push(currentPoint);
           saveProgress(name, points);
-          message = "✅ " + name + " 已点亮打卡点 " + currentPoint;
+          message = "✅ " + name + " 已点亮打卡点 SSAM-" + currentPoint;
         } else {
-          message = "打卡点 " + currentPoint + " 已经点亮过";
+          message = "打卡点 SSAM-" + currentPoint + " 已经点亮过";
         }
       } else {
         message = "已显示 " + name + " 的打卡进度";
@@ -679,7 +679,7 @@
 
     function init() {
       if (validCurrentPoint) {
-        el("currentChip").textContent = "当前 NFC 点位：" + currentPoint;
+        el("currentChip").textContent = "当前 NFC 点位：SSAM-" + currentPoint;
       } else {
         el("currentChip").textContent = "当前 NFC 点位：未识别";
       }
@@ -693,14 +693,14 @@
         renderByName(lastName);
       }
 
-      // 修复：刷新页面重复添加点位bug，仅首次未存在时添加
+      // 刷新页面自动点亮当前NFC点位
       if (validCurrentPoint && lastName) {
         let points = getProgress(lastName);
         if (!points.includes(currentPoint)) {
           points.push(currentPoint);
           saveProgress(lastName, points);
           renderByName(lastName);
-          toast("✅ 已自动点亮打卡点 " + currentPoint);
+          toast("✅ 已自动点亮打卡点 SSAM-" + currentPoint);
         }
       }
     }
