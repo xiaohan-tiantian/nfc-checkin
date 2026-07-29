@@ -48,7 +48,6 @@
       object-fit: contain;
       display: block;
       background: #101010;
-      /* 图片加载失败兜底 */
       min-height: 160px;
     }
     .image-box img:not([src]), .image-box img[src=""] {
@@ -241,11 +240,14 @@
     .point-icon {
       width: 100%;
       height: 100%;
+      /* 图标兜底纯色背景，防止图片丢失空白 */
+      background: #cce6d8;
       background-image: url("./icon.jpg");
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
       position: relative;
+      border-radius: 24px;
     }
 
     .point-number {
@@ -513,10 +515,9 @@
   <script>
     const TOTAL_POINTS = 20;
     let submitLock = false; // 提交防抖锁
-
-// SSAM-1固定点位
-const currentPoint = 1;
-const validCurrentPoint = true;
+    // SSAM-1固定点位
+    const currentPoint = 1;
+    const validCurrentPoint = true;
 
     const el = function(id) {
       return document.getElementById(id);
@@ -561,14 +562,17 @@ const validCurrentPoint = true;
     function renderPoints(activePoints) {
       const grid = el("pointsGrid");
       grid.innerHTML = "";
+      // 循环生成20个点位卡片
       for (let i = 1; i <= TOTAL_POINTS; i++) {
         const card = document.createElement("div");
+        // 已打卡添加active高亮类
         card.className = activePoints.includes(i) ? "point active" : "point";
-        card.innerHTML =
-          '<div class="point-icon">' +
-            '<div class="point-number">' + i + '</div>' +
-            '<div class="point-label">打卡点</div>' +
-          '</div>';
+        card.innerHTML = `
+          <div class="point-icon">
+            <div class="point-number">${i}</div>
+            <div class="point-label">打卡点</div>
+          </div>
+        `;
         grid.appendChild(card);
       }
     }
@@ -576,7 +580,6 @@ const validCurrentPoint = true;
     function renderProgress(activePoints) {
       const count = activePoints.length;
       el("doneCount").textContent = count;
-      // 取整消除小数毛刺
       const percent = Math.round((count / TOTAL_POINTS) * 100);
       el("progressBar").style.width = percent + "%";
     }
@@ -605,40 +608,31 @@ const validCurrentPoint = true;
       }
     }
 
-async function submitCheckin() {
-
-if (submitLock) return;
-
-const name = el("employeeName").value.trim();
-
-if (!name) {
-toast("请先输入员工姓名");
-return;
-}
-
-submitLock = true;
-
-let points = getProgress(name);
-
-if (!points.includes(1)) {
-points.push(1);
-saveProgress(name, points);
-
-toast("✅ " + name + " 已成功点亮 SSAM-1");
-} else {
-toast("SSAM-1 已经点亮过");
-}
-
-renderByName(name);
-
-if (getProgress(name).length === TOTAL_POINTS) {
-celebrate();
-}
-
-setTimeout(function () {
-submitLock = false;
-}, 200);
-}
+    async function submitCheckin() {
+      if (submitLock) return;
+      const name = el("employeeName").value.trim();
+      if (!name) {
+        toast("请先输入员工姓名");
+        return;
+      }
+      submitLock = true;
+      let points = getProgress(name);
+      if (!points.includes(currentPoint)) {
+        points.push(currentPoint);
+        saveProgress(name, points);
+        toast("✅ " + name + " 已成功点亮 SSAM-" + currentPoint);
+      } else {
+        toast("SSAM-" + currentPoint + " 已经点亮过");
+      }
+      renderByName(name);
+      // 全部打卡完成庆祝
+      if (getProgress(name).length === TOTAL_POINTS) {
+        celebrate();
+      }
+      setTimeout(function () {
+        submitLock = false;
+      }, 200);
+    }
 
     function clearCurrentNameProgress() {
       const name = el("employeeName").value.trim();
@@ -656,7 +650,6 @@ submitLock = false;
       if (c.classList.contains("show")) return;
       c.innerHTML = "";
       c.classList.add("show");
-
       const colors = ["#00A651", "#6ee787", "#ffe680", "#38bdf8", "#fb7185"];
       for (let i = 0; i < 90; i++) {
         const piece = document.createElement("i");
@@ -666,41 +659,41 @@ submitLock = false;
         piece.style.transform = "rotate(" + Math.random() * 180 + "deg)";
         c.appendChild(piece);
       }
-
       toast("🎉 恭喜，20 个打卡点已全部完成！");
       setTimeout(() => {
         c.classList.remove("show");
-        c.innerHTML = ""; // 清空DOM，释放内存
+        c.innerHTML = "";
       }, 3400);
     }
 
-function init() {
-el("currentChip").textContent = "当前 NFC 点位：1";
-
+    // 页面初始化函数
+    function init() {
+      // 固定显示NFC点位1
+      el("currentChip").textContent = "当前 NFC 点位：" + currentPoint;
+      // 初始渲染空白点位（全部灰色未点亮）
       renderPoints([]);
       renderProgress([]);
+      // 读取上次填写姓名
       const lastName = localStorage.getItem("nfc_checkin_last_name") || "";
-
       if (lastName) {
         el("employeeName").value = lastName;
         renderByName(lastName);
       }
+      // 绑定全部点击事件
+      el("submitBtn").addEventListener("click", submitCheckin);
+      el("employeeName").addEventListener("keydown", function(e) {
+        if (e.key === "Enter") submitCheckin();
+      });
+      el("changeNameBtn").addEventListener("click", function() {
+        el("employeeName").value = "";
+        el("employeeName").focus();
+        renderByName("");
+        toast("请输入新的员工姓名");
+      });
+      el("clearBtn").addEventListener("click", clearCurrentNameProgress);
+    }
 
-
-    // 绑定事件
-    el("submitBtn").addEventListener("click", submitCheckin);
-    el("employeeName").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") submitCheckin();
-    });
-    el("changeNameBtn").addEventListener("click", function() {
-      el("employeeName").value = "";
-      el("employeeName").focus();
-      renderByName("");
-      toast("请输入新的员工姓名");
-    });
-    el("clearBtn").addEventListener("click", clearCurrentNameProgress);
-
-    // 页面初始化
+    // 页面加载执行初始化（修复原代码init写在函数内部无法执行bug）
     init();
   </script>
 </body>
