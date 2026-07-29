@@ -216,6 +216,7 @@
       font-size: 14px;
     }
 
+    /* 桌面端一行10列 */
     .grid {
       display: grid;
       grid-template-columns: repeat(10, 1fr);
@@ -239,11 +240,14 @@
     .point-icon {
       width: 100%;
       height: 100%;
+      /* 图标兜底纯色背景，防止图片丢失空白 */
+      background: #cce6d8;
       background-image: url("./icon.jpg");
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
       position: relative;
+      border-radius: 24px;
     }
 
     .point-number {
@@ -379,6 +383,7 @@
       }
     }
 
+    /* 平板适配：小于800px改为4列 */
     @media (max-width: 800px) {
       .hero-content {
         grid-template-columns: 1fr;
@@ -397,6 +402,7 @@
         font-size: 10px;
         bottom: 5px;
       }
+      /* 移动端替代右上角标签 */
       .point.active .point-label::after {
         content: " ✓";
         color: #00ff94;
@@ -407,6 +413,7 @@
       }
     }
 
+    /* 手机小屏适配 */
     @media (max-width: 430px) {
       .container {
         width: 96vw;
@@ -452,6 +459,7 @@
   <main class="container">
     <section class="hero">
       <div class="image-box">
+        <!-- 修改为banner2.jpg -->
         <img src="./banner2.jpg" alt="活动横幅" loading="lazy">
       </div>
 
@@ -507,19 +515,16 @@
 
   <script>
     const TOTAL_POINTS = 20;
-    let submitLock = false;
-
-    const qs = new URLSearchParams(window.location.search);
-    const currentPoint = Number(qs.get("point"));
-    const validCurrentPoint =
-      Number.isInteger(currentPoint) &&
-      currentPoint >= 1 &&
-      currentPoint <= TOTAL_POINTS;
+    let submitLock = false; // 提交防抖锁
+    // 唯一修改：当前NFC点位改为2
+    const currentPoint = 2;
+    const validCurrentPoint = true;
 
     const el = function(id) {
       return document.getElementById(id);
     };
 
+    // 优化姓名清洗：去除多空格、全角空格
     function normalizeName(name) {
       return name.trim().replace(/\s+/g, "").toLowerCase();
     }
@@ -558,14 +563,17 @@
     function renderPoints(activePoints) {
       const grid = el("pointsGrid");
       grid.innerHTML = "";
+      // 循环生成20个点位卡片
       for (let i = 1; i <= TOTAL_POINTS; i++) {
         const card = document.createElement("div");
+        // 已打卡添加active高亮类
         card.className = activePoints.includes(i) ? "point active" : "point";
-        card.innerHTML =
-          '<div class="point-icon">' +
-            '<div class="point-number">' + i + '</div>' +
-            '<div class="point-label">打卡点</div>' +
-          '</div>';
+        card.innerHTML = `
+          <div class="point-icon">
+            <div class="point-number">${i}</div>
+            <div class="point-label">打卡点</div>
+          </div>
+        `;
         grid.appendChild(card);
       }
     }
@@ -577,6 +585,7 @@
       el("progressBar").style.width = percent + "%";
     }
 
+    // XSS转义
     function displayName(name) {
       return name.replace(/[&<>"']/g, ch => ({
         "&": "&amp;",
@@ -608,29 +617,22 @@
         return;
       }
       submitLock = true;
-
       let points = getProgress(name);
-      let message = "";
-
-      if (validCurrentPoint) {
-        if (!points.includes(currentPoint)) {
-          points.push(currentPoint);
-          saveProgress(name, points);
-          message = "✅ " + name + " 已点亮打卡点 SSAM-" + currentPoint;
-        } else {
-          message = "打卡点 SSAM-" + currentPoint + " 已经点亮过";
-        }
+      if (!points.includes(currentPoint)) {
+        points.push(currentPoint);
+        saveProgress(name, points);
+        toast("✅ " + name + " 已成功点亮 SSAM-" + currentPoint);
       } else {
-        message = "已显示 " + name + " 的打卡进度";
+        toast("SSAM-" + currentPoint + " 已经点亮过");
       }
-
       renderByName(name);
-      toast(message);
-
+      // 全部打卡完成庆祝
       if (getProgress(name).length === TOTAL_POINTS) {
         celebrate();
       }
-      setTimeout(() => submitLock = false, 200);
+      setTimeout(function () {
+        submitLock = false;
+      }, 200);
     }
 
     function clearCurrentNameProgress() {
@@ -649,7 +651,6 @@
       if (c.classList.contains("show")) return;
       c.innerHTML = "";
       c.classList.add("show");
-
       const colors = ["#00A651", "#6ee787", "#ffe680", "#38bdf8", "#fb7185"];
       for (let i = 0; i < 90; i++) {
         const piece = document.createElement("i");
@@ -659,7 +660,6 @@
         piece.style.transform = "rotate(" + Math.random() * 180 + "deg)";
         c.appendChild(piece);
       }
-
       toast("🎉 恭喜，20 个打卡点已全部完成！");
       setTimeout(() => {
         c.classList.remove("show");
@@ -667,45 +667,34 @@
       }, 3400);
     }
 
+    // 页面初始化函数
     function init() {
-      if (validCurrentPoint) {
-        el("currentChip").textContent = "当前 NFC 点位：SSAM-" + currentPoint;
-      } else {
-        el("currentChip").textContent = "当前 NFC 点位：未识别";
-      }
-
+      // 固定显示NFC点位2
+      el("currentChip").textContent = "当前 NFC 点位：" + currentPoint;
+      // 初始渲染空白点位（全部灰色未点亮）
       renderPoints([]);
       renderProgress([]);
+      // 读取上次填写姓名
       const lastName = localStorage.getItem("nfc_checkin_last_name") || "";
-
       if (lastName) {
         el("employeeName").value = lastName;
         renderByName(lastName);
       }
-
-      if (validCurrentPoint && lastName) {
-        let points = getProgress(lastName);
-        if (!points.includes(currentPoint)) {
-          points.push(currentPoint);
-          saveProgress(lastName, points);
-          renderByName(lastName);
-          toast("✅ 已自动点亮打卡点 SSAM-" + currentPoint);
-        }
-      }
+      // 绑定全部点击事件
+      el("submitBtn").addEventListener("click", submitCheckin);
+      el("employeeName").addEventListener("keydown", function(e) {
+        if (e.key === "Enter") submitCheckin();
+      });
+      el("changeNameBtn").addEventListener("click", function() {
+        el("employeeName").value = "";
+        el("employeeName").focus();
+        renderByName("");
+        toast("请输入新的员工姓名");
+      });
+      el("clearBtn").addEventListener("click", clearCurrentNameProgress);
     }
 
-    el("submitBtn").addEventListener("click", submitCheckin);
-    el("employeeName").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") submitCheckin();
-    });
-    el("changeNameBtn").addEventListener("click", function() {
-      el("employeeName").value = "";
-      el("employeeName").focus();
-      renderByName("");
-      toast("请输入新的员工姓名");
-    });
-    el("clearBtn").addEventListener("click", clearCurrentNameProgress);
-
+    // 页面加载执行初始化
     init();
   </script>
 </body>
