@@ -514,12 +514,9 @@
     const TOTAL_POINTS = 20;
     let submitLock = false; // 提交防抖锁
 
-    const qs = new URLSearchParams(window.location.search);
-    const currentPoint = Number(qs.get("point"));
-    const validCurrentPoint =
-      Number.isInteger(currentPoint) &&
-      currentPoint >= 1 &&
-      currentPoint <= TOTAL_POINTS;
+// SSAM-1固定点位
+const currentPoint = 1;
+const validCurrentPoint = true;
 
     const el = function(id) {
       return document.getElementById(id);
@@ -608,40 +605,40 @@
       }
     }
 
-    async function submitCheckin() {
-      // 防抖拦截重复点击
-      if (submitLock) return;
-      const name = el("employeeName").value.trim();
-      if (!name) {
-        toast("请先输入员工姓名");
-        return;
-      }
-      submitLock = true;
+async function submitCheckin() {
 
-      let points = getProgress(name);
-      let message = "";
+if (submitLock) return;
 
-      if (validCurrentPoint) {
-        if (!points.includes(currentPoint)) {
-          points.push(currentPoint);
-          saveProgress(name, points);
-          message = "✅ " + name + " 已点亮打卡点 SSAM-" + currentPoint;
-        } else {
-          message = "打卡点 SSAM-" + currentPoint + " 已经点亮过";
-        }
-      } else {
-        message = "已显示 " + name + " 的打卡进度";
-      }
+const name = el("employeeName").value.trim();
 
-      renderByName(name);
-      toast(message);
+if (!name) {
+toast("请先输入员工姓名");
+return;
+}
 
-      if (getProgress(name).length === TOTAL_POINTS) {
-        celebrate();
-      }
-      // 200ms解锁
-      setTimeout(() => submitLock = false, 200);
-    }
+submitLock = true;
+
+let points = getProgress(name);
+
+if (!points.includes(1)) {
+points.push(1);
+saveProgress(name, points);
+
+toast("✅ " + name + " 已成功点亮 SSAM-1");
+} else {
+toast("SSAM-1 已经点亮过");
+}
+
+renderByName(name);
+
+if (getProgress(name).length === TOTAL_POINTS) {
+celebrate();
+}
+
+setTimeout(function () {
+submitLock = false;
+}, 200);
+}
 
     function clearCurrentNameProgress() {
       const name = el("employeeName").value.trim();
@@ -677,12 +674,8 @@
       }, 3400);
     }
 
-    function init() {
-      if (validCurrentPoint) {
-        el("currentChip").textContent = "当前 NFC 点位：SSAM-" + currentPoint;
-      } else {
-        el("currentChip").textContent = "当前 NFC 点位：未识别";
-      }
+function init() {
+el("currentChip").textContent = "当前 NFC 点位：1";
 
       renderPoints([]);
       renderProgress([]);
@@ -693,17 +686,6 @@
         renderByName(lastName);
       }
 
-      // 刷新页面自动点亮当前NFC点位
-      if (validCurrentPoint && lastName) {
-        let points = getProgress(lastName);
-        if (!points.includes(currentPoint)) {
-          points.push(currentPoint);
-          saveProgress(lastName, points);
-          renderByName(lastName);
-          toast("✅ 已自动点亮打卡点 SSAM-" + currentPoint);
-        }
-      }
-    }
 
     // 绑定事件
     el("submitBtn").addEventListener("click", submitCheckin);
