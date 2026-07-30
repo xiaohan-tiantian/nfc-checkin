@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>SSAM-10 NFC打卡点位10</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, Microsoft YaHei, sans-serif;
+    }
+    body {
+      background-color: #f0f4f8;
+      padding-bottom: 80px;
+    }
+    /* 顶部横幅 */
+    .banner {
+      width: 100%;
+      height: 180px;
+      background-image: url("banner10.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+    .container {
+      padding: 20px;
+      max-width: 750px;
+      margin: 0 auto;
+    }
+    .title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #1a365d;
+      margin: 16px 0;
+      text-align: center;
+    }
+    .desc {
+      color: #555;
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    /* 点位进度面板 */
+    .point-panel {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      margin-bottom: 20px;
+    }
+    .point-title {
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #222;
+    }
+    .points-wrap {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .point-item {
+      height: 44px;
+      line-height: 44px;
+      text-align: center;
+      border-radius: 8px;
+      background: #e2e8f0;
+      color: #666;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+    .point-item.active {
+      background: #2b6cb0;
+      color: #fff;
+    }
+    /* 进度条 */
+    .progress-box {
+      margin-top: 16px;
+    }
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #444;
+      margin-bottom: 6px;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-inner {
+      height: 100%;
+      background: #3182ce;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+    /* 打卡表单 */
+    .form-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .input-box {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    input {
+      width: 100%;
+      height: 46px;
+      border: 1px solid #cbd5e0;
+      border-radius: 8px;
+      padding: 0 14px;
+      font-size: 16px;
+      outline: none;
+    }
+    input:focus {
+      border-color: #3182ce;
+    }
+    .submit-btn {
+      width: 100%;
+      height: 48px;
+      background: #2b6cb0;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .submit-btn:active {
+      background: #2c5282;
+    }
+    /* Toast提示 */
+    .toast {
+      position: fixed;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 15px;
+      display: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部横幅 banner10.jpg -->
+  <div class="banner"></div>
+
+  <div class="container">
+    <h1 class="title">SSAM-10 寻宝打卡点位10</h1>
+    <p class="desc">输入员工姓名完成点位10打卡，已打卡点位自动点亮</p>
+
+    <!-- 全部20点位展示面板 -->
+    <div class="point-panel">
+      <div class="point-title">打卡点位总进度（共20点）</div>
+      <div class="points-wrap" id="pointsWrap"></div>
+      <div class="progress-box">
+        <div class="progress-text">
+          <span>完成进度</span>
+          <span id="progressNum">0/20</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-inner" id="progressBar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 打卡表单 -->
+    <div class="form-card">
+      <div class="input-box">
+        <label>员工姓名</label>
+        <input type="text" id="staffName" placeholder="请输入您的姓名">
+      </div>
+      <button class="submit-btn" id="checkBtn">确认打卡点位10</button>
+    </div>
+  </div>
+
+  <!-- 弹窗提示 -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // 当前页面点位编号
+    const currentPoint = 10;
+    const totalPoint = 20;
+    const toast = document.getElementById('toast');
+    const pointsWrap = document.getElementById('pointsWrap');
+    const progressBar = document.getElementById('progressBar');
+    const progressNum = document.getElementById('progressNum');
+    const staffNameInput = document.getElementById('staffName');
+    const checkBtn = document.getElementById('checkBtn');
+
+    // 初始化点位DOM
+    function renderPoints() {
+      pointsWrap.innerHTML = '';
+      // 读取本地存储打卡记录
+      let record = JSON.parse(localStorage.getItem('ssamRecord')) || [];
+      for(let i=1; i<=totalPoint; i++){
+        let div = document.createElement('div');
+        div.className = 'point-item';
+        div.innerText = `点位${i}`;
+        // 判断是否已打卡
+        if(record.includes(i)){
+          div.classList.add('active');
+        }
+        pointsWrap.appendChild(div);
+      }
+      // 更新进度条
+      const finishCount = record.length;
+      progressNum.innerText = `${finishCount}/${totalPoint}`;
+      progressBar.style.width = `${(finishCount/totalPoint)*100}%`;
+    }
+
+    // 弹出提示
+    function showToast(msg) {
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(()=>{
+        toast.style.display = 'none';
+      }, 1800);
+    }
+
+    // 打卡提交逻辑
+    checkBtn.addEventListener('click', function(){
+      const name = staffNameInput.value.trim();
+      if(!name){
+        showToast('请输入员工姓名');
+        return;
+      }
+      // 获取已有打卡点位
+      let record = JSON.parse(localStorage.getItem('ssamRecord')) || [];
+      if(record.includes(currentPoint)){
+        showToast('您已完成点位10打卡，无需重复提交');
+        return;
+      }
+      // 添加当前点位
+      record.push(currentPoint);
+      localStorage.setItem('ssamRecord', JSON.stringify(record));
+      showToast(`打卡成功！SSAM-10 点位10已完成`);
+      renderPoints();
+      staffNameInput.value = '';
+    })
+
+    // 页面加载渲染点位
+    window.onload = renderPoints;
+  </script>
+</body>
+</html>
