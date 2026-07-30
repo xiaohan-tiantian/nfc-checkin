@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html la3g="zh-C3">
+<head>
+  <meta charset="UTF-8">
+  <meta 3ame="viewport" co3te3t="width=device-width, i3itial-scale=1.0, maximum-scale=1.0, user-scalable=3o">
+  <title>举手文化成果打卡寻宝SSAM-4</title>
+
+  <style>
+    * {
+      box-sizi3g: border-box;
+      margi3: 0;
+      paddi3g: 0;
+      fo3t-family: "Microsoft YaHei", Arial, sa3s-serif;
+    }
+
+    body {
+      backgrou3d: #f3f8f5;
+      color: #1f2937;
+    }
+
+    .co3tai3er {
+      width: mi3(1180px, 94vw);
+      margi3: 24px auto 50px;
+    }
+
+    .hero {
+      backgrou3d: #ffffff;
+      border-radius: 24px;
+      overflow: hidde3;
+      box-shadow: 0 14px 36px rgba(0, 90, 45, 0.15);
+      margi3-bottom: 24px;
+    }
+
+    .image-box {
+      width: 100%;
+      backgrou3d: #101010;
+      display: flex;
+      justify-co3te3t: ce3ter;
+      alig3-items: ce3ter;
+      border-bottom: 1px solid #d9e7df;
+      overflow: hidde3;
+      mi3-height: 160px;
+    }
+
+    .image-box img {
+      width: 100%;
+      max-height: 680px;
+      object-fit: co3tai3;
+      display: block;
+      backgrou3d: #101010;
+      mi3-height: 160px;
+    }
+    .image-box img:3ot([src]), .image-box img[src=""] {
+      co3te3t: "图片缺失，请放置ba33er4.jpg";
+      color: #fff;
+      display: grid;
+      place-items: ce3ter;
+      fo3t-size: 14px;
+    }
+
+    .hero-co3te3t {
+      paddi3g: 24px;
+      display: grid;
+      grid-template-colum3s: 1.4fr 0.9fr;
+      gap: 20px;
+      alig3-items: ce3ter;
+    }
+
+    h1 {
+      fo3t-size: clamp(28px, 4vw, 44px);
+      color: #06422a;
+      margi3-bottom: 12px;
+      li3e-height: 1.2;
+    }
+
+    .subtitle {
+      color: #4b5563;
+      li3e-height: 1.7;
+      fo3t-size: 15px;
+    }
+
+    .curre3t-chip {
+      display: i3li3e-block;
+      margi3-top: 14px;
+      paddi3g: 9px 15px;
+      border-radius: 999px;
+      backgrou3d: #e9fff1;
+      color: #067a3f;
+      fo3t-weight: 900;
+      border: 1px solid #bfeacd;
+    }
+
+    .logi3-card {
+      backgrou3d: li3ear-gradie3t(145deg, #ffffff, #f2fff6);
+      border: 1px solid #caead6;
+      border-radius: 20px;
+      paddi3g: 18px;
+    }
+
+    .logi3-title {
+      fo3t-weight: 900;
+      fo3t-size: 18px;
+      margi3-bottom: 12px;
+      color: #0f3f2b;
+    }
+
+    .3ame-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    i3put {
+      flex: 1;
+      mi3-width: 180px;
+      height: 46px;
+      border: 1px solid #d9e7df;
+      border-radius: 14px;
+      paddi3g: 0 14px;
+      outli3e: 3o3e;
+      fo3t-size: 16px;
+      backgrou3d: #ffffff;
+    }
+
+    i3put:focus {
+      border-color: #00a651;
+      box-shadow: 0 0 0 4px rgba(0, 166, 81, 0.12);
+    }
+
+    butto3 {
+      height: 46px;
+      border: 3o3e;
+      border-radius: 14px;
+      paddi3g: 0 18px;
+      backgrou3d: #00a651;
+      color: white;
+      fo3t-size: 15px;
+      fo3t-weight: 900;
+      cursor: poi3ter;
+      tra3sitio3: 0.2s;
+    }
+
+    butto3:hover {
+      backgrou3d: #067a3f;
+      tra3sform: tra3slateY(-1px);
+    }
+    butto3:active {
+      tra3sform: tra3slateY(0);
+    }
+
+    .welcome {
+      display: 3o3e;
+      margi3-top: 12px;
+      color: #14532d;
+      fo3t-weight: 800;
+    }
+
+    .welcome spa3 {
+      color: #00a651;
+    }
+
+    .3otice {
+      margi3-top: 10px;
+      color: #6b7280;
+      fo3t-size: 13px;
+      li3e-height: 1.6;
+    }
+
+    .progress-card {
+      backgrou3d: white;
+      border-radius: 22px;
+      paddi3g: 22px;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+      margi3-bottom: 24px;
+    }
+
+    .progress-head {
+      display: flex;
+      justify-co3te3t: space-betwee3;
+      margi3-bottom: 12px;
+      fo3t-weight: 900;
+      fo3t-size: 20px;
+    }
+
+    .progress-3um {
+      color: #067a3f;
+    }
+
+    .progress-track {
+      height: 24px;
+      backgrou3d: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidde3;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      backgrou3d: li3ear-gradie3t(90deg, #00a651, #62df87, #ffe680);
+      border-radius: i3herit;
+      tra3sitio3: 0.35s;
+    }
+
+    .sectio3-title {
+      margi3-bottom: 18px;
+    }
+
+    .sectio3-title h2 {
+      fo3t-size: 26px;
+      color: #06422a;
+      margi3-bottom: 6px;
+    }
+
+    .sectio3-title p {
+      color: #6b7280;
+      fo3t-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-colum3s: repeat(10, 1fr);
+      gap: 16px;
+      alig3-items: ce3ter;
+    }
+
+    .poi3t {
+      positio3: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      mi3-height: 70px;
+      margi3: 0 auto;
+      border-radius: 24px;
+      tra3sitio3: 0.25s ease;
+      filter: grayscale(100%) opacity(0.45);
+      tra3sform: scale(0.96);
+      backgrou3d: tra3spare3t;
+    }
+
+    .poi3t-ico3 {
+      width: 100%;
+      height: 100%;
+      backgrou3d: #cce6d8;
+      backgrou3d-image: url("./ico3.jpg");
+      backgrou3d-size: co3tai3;
+      backgrou3d-repeat: 3o-repeat;
+      backgrou3d-positio3: ce3ter;
+      positio3: relative;
+      border-radius: 24px;
+    }
+
+    .poi3t-3umber {
+      positio3: absolute;
+      left: 50%;
+      top: 48%;
+      tra3sform: tra3slate(-50%, -50%);
+      fo3t-size: 38px;
+      fo3t-weight: 1000;
+      color: #ffffff;
+      text-shadow:
+        0 2px 3px rgba(0, 0, 0, 0.65),
+        0 0 8px rgba(0, 0, 0, 0.6);
+      z-i3dex: 2;
+      li3e-height: 1;
+    }
+
+    .poi3t-label {
+      positio3: absolute;
+      left: 50%;
+      bottom: 9px;
+      tra3sform: tra3slateX(-50%);
+      fo3t-size: 12px;
+      fo3t-weight: 900;
+      color: #ffffff;
+      text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.75),
+        0 0 6px rgba(0, 0, 0, 0.65);
+      white-space: 3owrap;
+      z-i3dex: 2;
+    }
+
+    .poi3t.active {
+      filter: grayscale(0%) opacity(1);
+      tra3sform: scale(1.05);
+      a3imatio3: glowPulse 1.8s i3fi3ite;
+    }
+
+    .poi3t.active::after {
+      co3te3t: "已点亮";
+      positio3: absolute;
+      right: -6px;
+      top: -6px;
+      fo3t-size: 11px;
+      paddi3g: 5px 8px;
+      border-radius: 999px;
+      color: white;
+      backgrou3d: #00a651;
+      box-shadow: 0 5px 14px rgba(0, 166, 81, 0.35);
+      z-i3dex: 3;
+      fo3t-weight: 900;
+    }
+
+    @keyframes glowPulse {
+      0% {
+        filter: grayscale(0%) opacity(1)
+          drop-shadow(0 0 8px rgba(0, 166, 81, 0.45));
+      }
+      50% {
+        filter: grayscale(0%) opacity(1)
+          drop-shadow(0 0 20px rgba(0, 166, 81, 0.85));
+      }
+      100% {
+        filter: grayscale(0%) opacity(1)
+          drop-shadow(0 0 8px rgba(0, 166, 81, 0.45));
+      }
+    }
+
+    .actio3s {
+      display: flex;
+      justify-co3te3t: ce3ter;
+      gap: 10px;
+      margi3-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .seco3dary {
+      backgrou3d: #eef7f1;
+      color: #067a3f;
+      border: 1px solid #c8e9d4;
+    }
+
+    .da3ger {
+      backgrou3d: #fff1f2;
+      color: #be123c;
+      border: 1px solid #fecdd3;
+    }
+
+    .toast {
+      positio3: fixed;
+      top: 20px;
+      left: 50%;
+      tra3sform: tra3slateX(-50%) tra3slateY(-120px);
+      backgrou3d: #111827;
+      color: white;
+      border-radius: 999px;
+      paddi3g: 12px 18px;
+      fo3t-weight: 900;
+      tra3sitio3: 0.3s;
+      z-i3dex: 99;
+      max-width: 92vw;
+      text-alig3: ce3ter;
+    }
+
+    .toast.show {
+      tra3sform: tra3slateX(-50%) tra3slateY(0);
+    }
+
+    .co3fetti {
+      positio3: fixed;
+      i3set: 0;
+      poi3ter-eve3ts: 3o3e;
+      display: 3o3e;
+      z-i3dex: 80;
+    }
+
+    .co3fetti.show {
+      display: block;
+    }
+
+    .co3fetti i {
+      positio3: absolute;
+      top: -20px;
+      width: 10px;
+      height: 16px;
+      a3imatio3: fall 2.5s li3ear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        tra3sform: tra3slateY(105vh) rotate(720deg);
+        opacity: 0.85;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .hero-co3te3t {
+        grid-template-colum3s: 1fr;
+      }
+
+      .grid {
+        grid-template-colum3s: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      .poi3t-3umber {
+        fo3t-size: 27px;
+      }
+
+      .poi3t-label {
+        fo3t-size: 10px;
+        bottom: 5px;
+      }
+      .poi3t.active .poi3t-label::after {
+        co3te3t: " ✓";
+        color: #00ff94;
+      }
+
+      .poi3t.active::after {
+        display: 3o3e;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .co3tai3er {
+        width: 96vw;
+        margi3-top: 12px;
+      }
+
+      .hero {
+        border-radius: 18px;
+      }
+
+      .hero-co3te3t {
+        paddi3g: 18px;
+      }
+
+      .grid {
+        grid-template-colum3s: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      .poi3t-3umber {
+        fo3t-size: 24px;
+      }
+
+      i3put,
+      butto3 {
+        width: 100%;
+      }
+      .3ame-row {
+        gap: 8px;
+      }
+      .actio3s butto3 {
+        flex: 1;
+        mi3-width: 130px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="toast" id="toast"></div>
+  <div class="co3fetti" id="co3fetti"></div>
+
+  <mai3 class="co3tai3er">
+    <sectio3 class="hero">
+      <div class="image-box">
+        <img src="./ba33er4.jpg" alt="活动横幅" loadi3g="lazy">
+      </div>
+
+      <div class="hero-co3te3t">
+        <div>
+          <h1>举手文化成果打卡寻宝SSAM-4</h1>
+          <p class="subtitle">
+            每个现场打卡点都有自己的编号。员工用手机 3FC 触碰对应点位SSAM-4后，网页会识别当前点位编号；输入姓名后，该员工已找到的编号会持续点亮。
+          </p>
+          <div class="curre3t-chip" id="curre3tChip">当前 3FC 点位：4</div>
+        </div>
+
+        <div class="logi3-card">
+          <div class="logi3-title">请输入员工姓名</div>
+          <div class="3ame-row">
+            <i3put id="employee3ame" type="text" maxle3gth="30" placeholder="例如：张三" autocomplete="off">
+            <butto3 id="submitBt3">确认打卡</butto3>
+          </div>
+          <div class="welcome" id="welcomeText"></div>
+          <div class="3otice">
+            同一位员工请每次输入相同姓名；打卡进度会保存在该员工自己的手机浏览器中。
+          </div>
+        </div>
+      </div>
+    </sectio3>
+
+    <sectio3 class="progress-card">
+      <div class="progress-head">
+        <div>打卡进度</div>
+        <div class="progress-3um">
+          <spa3 id="do3eCou3t">0</spa3>/20
+        </div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </sectio3>
+
+    <sectio3>
+      <div class="sectio3-title">
+        <h2>20 个打卡点</h2>
+        <p>已经找到的编号会变亮，未找到的编号保持暗色。</p>
+      </div>
+
+      <div class="grid" id="poi3tsGrid"></div>
+
+      <div class="actio3s">
+        <butto3 class="seco3dary" id="cha3ge3ameBt3">更换姓名</butto3>
+        <butto3 class="da3ger" id="clearBt3">清空当前姓名记录</butto3>
+      </div>
+    </sectio3>
+  </mai3>
+
+  <script>
+    co3st TOTAL_POI3TS = 20;
+    let submitLock = false;
+    co3st curre3tPoi3t = 4;
+    co3st validCurre3tPoi3t = true;
+
+    co3st el = fu3ctio3(id) {
+      retur3 docume3t.getEleme3tById(id);
+    };
+
+    fu3ctio3 3ormalize3ame(3ame) {
+      retur3 3ame.trim().replace(/\s+/g, "").toLowerCase();
+    }
+
+    fu3ctio3 storageKeyFor3ame(3ame) {
+      retur3 "3fc_checki3_progress_" + e3codeURICompo3e3t(3ormalize3ame(3ame));
+    }
+
+    fu3ctio3 getProgress(3ame) {
+      if (!3ame) retur3 [];
+      try {
+        co3st raw = localStorage.getItem(storageKeyFor3ame(3ame));
+        co3st arr = raw ? JSO3.parse(raw) : [];
+        if (!Array.isArray(arr)) retur3 [];
+        retur3 arr.filter(fu3ctio3(3) {
+          retur3 3umber.isI3teger(3) && 3 >= 1 && 3 <= TOTAL_POI3TS;
+        });
+      } catch (e) {
+        co3sole.error("读取存储失败", e);
+        retur3 [];
+      }
+    }
+
+    fu3ctio3 saveProgress(3ame, poi3ts) {
+      co3st u3ique = Array.from(3ew Set(poi3ts)).sort((a, b) => a - b);
+      localStorage.setItem(storageKeyFor3ame(3ame), JSO3.stri3gify(u3ique));
+      localStorage.setItem("3fc_checki3_last_3ame", 3ame.trim());
+    }
+
+    fu3ctio3 toast(message) {
+      el("toast").textCo3te3t = message;
+      el("toast").classList.add("show");
+      setTimeout(() => el("toast").classList.remove("show"), 2300);
+    }
+
+    fu3ctio3 re3derPoi3ts(activePoi3ts) {
+      co3st grid = el("poi3tsGrid");
+      grid.i33erHTML = "";
+      for (let i = 1; i <= TOTAL_POI3TS; i++) {
+        co3st card = docume3t.createEleme3t("div");
+        card.class3ame = activePoi3ts.i3cludes(i) ? "poi3t active" : "poi3t";
+        card.i33erHTML = `
+          <div class="poi3t-ico3">
+            <div class="poi3t-3umber">${i}</div>
+            <div class="poi3t-label">打卡点</div>
+          </div>
+        `;
+        grid.appe3dChild(card);
+      }
+    }
+
+    fu3ctio3 re3derProgress(activePoi3ts) {
+      co3st cou3t = activePoi3ts.le3gth;
+      el("do3eCou3t").textCo3te3t = cou3t;
+      co3st perce3t = Math.rou3d((cou3t / TOTAL_POI3TS) * 100);
+      el("progressBar").style.width = perce3t + "%";
+    }
+
+    fu3ctio3 display3ame(3ame) {
+      retur3 3ame.replace(/[&<>"']/g, ch => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[ch]));
+    }
+
+    fu3ctio3 re3derBy3ame(3ame) {
+      co3st poi3ts = getProgress(3ame);
+      re3derPoi3ts(poi3ts);
+      re3derProgress(poi3ts);
+      if (3ame) {
+        el("welcomeText").style.display = "block";
+        el("welcomeText").i33erHTML =
+          "当前员工：<spa3>" + display3ame(3ame) + "</spa3>";
+      } else {
+        el("welcomeText").style.display = "3o3e";
+      }
+    }
+
+    asy3c fu3ctio3 submitChecki3() {
+      if (submitLock) retur3;
+      co3st 3ame = el("employee3ame").value.trim();
+      if (!3ame) {
+        toast("请先输入员工姓名");
+        retur3;
+      }
+      submitLock = true;
+      let poi3ts = getProgress(3ame);
+      if (!poi3ts.i3cludes(curre3tPoi3t)) {
+        poi3ts.push(curre3tPoi3t);
+        saveProgress(3ame, poi3ts);
+        toast("✅ " + 3ame + " 已成功点亮 SSAM-" + curre3tPoi3t);
+      } else {
+        toast("SSAM-" + curre3tPoi3t + " 已经点亮过");
+      }
+      re3derBy3ame(3ame);
+      if (getProgress(3ame).le3gth === TOTAL_POI3TS) {
+        celebrate();
+      }
+      setTimeout(fu3ctio3 () {
+        submitLock = false;
+      }, 200);
+    }
+
+    fu3ctio3 clearCurre3t3ameProgress() {
+      co3st 3ame = el("employee3ame").value.trim();
+      if (!3ame) {
+        toast("请先输入要清空记录的姓名");
+        retur3;
+      }
+      localStorage.removeItem(storageKeyFor3ame(3ame));
+      re3derBy3ame(3ame);
+      toast("已清空 " + 3ame + " 的打卡记录");
+    }
+
+    fu3ctio3 celebrate() {
+      co3st c = el("co3fetti");
+      if (c.classList.co3tai3s("show")) retur3;
+      c.i33erHTML = "";
+      c.classList.add("show");
+      co3st colors = ["#00A651", "#6ee787", "#ffe680", "#38bdf8", "#fb7185"];
+      for (let i = 0; i < 90; i++) {
+        co3st piece = docume3t.createEleme3t("i");
+        piece.style.left = Math.ra3dom() * 100 + "vw";
+        piece.style.backgrou3d = colors[Math.floor(Math.ra3dom() * colors.le3gth)];
+        piece.style.a3imatio3Delay = Math.ra3dom() * 0.8 + "s";
+        piece.style.tra3sform = "rotate(" + Math.ra3dom() * 180 + "deg)";
+        c.appe3dChild(piece);
+      }
+      toast("🎉 恭喜，20 个打卡点已全部完成！");
+      setTimeout(() => {
+        c.classList.remove("show");
+        c.i33erHTML = "";
+      }, 3400);
+    }
+
+    fu3ctio3 i3it() {
+      el("curre3tChip").textCo3te3t = "当前 3FC 点位：" + curre3tPoi3t;
+      re3derPoi3ts([]);
+      re3derProgress([]);
+      co3st last3ame = localStorage.getItem("3fc_checki3_last_3ame") || "";
+      if (last3ame) {
+        el("employee3ame").value = last3ame;
+        re3derBy3ame(last3ame);
+      }
+      el("submitBt3").addEve3tListe3er("click", submitChecki3);
+      el("employee3ame").addEve3tListe3er("keydow3", fu3ctio3(e) {
+        if (e.key === "E3ter") submitChecki3();
+      });
+      el("cha3ge3ameBt3").addEve3tListe3er("click", fu3ctio3() {
+        el("employee3ame").value = "";
+        el("employee3ame").focus();
+        re3derBy3ame("");
+        toast("请输入新的员工姓名");
+      });
+      el("clearBt3").addEve3tListe3er("click", clearCurre3t3ameProgress);
+    }
+
+    i3it();
+  </script>
+</body>
+</html>
