@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>举手文化成果打卡寻宝SSAM-N</title>
+  <title>举手文化成果打卡寻宝SSAM-3</title>
 
   <style>
     * {
@@ -51,7 +51,7 @@
       min-height: 160px;
     }
     .image-box img:not([src]), .image-box img[src=""] {
-      content: "图片缺失，请放置bannerN.jpg";
+      content: "图片缺失，请放置banner3.jpg";
       color: #fff;
       display: grid;
       place-items: center;
@@ -216,7 +216,6 @@
       font-size: 14px;
     }
 
-    /* 桌面端一行10列 */
     .grid {
       display: grid;
       grid-template-columns: repeat(10, 1fr);
@@ -240,7 +239,6 @@
     .point-icon {
       width: 100%;
       height: 100%;
-      /* 图标兜底纯色背景，防止图片丢失空白 */
       background: #cce6d8;
       background-image: url("./icon.jpg");
       background-size: contain;
@@ -383,7 +381,6 @@
       }
     }
 
-    /* 平板适配：小于800px改为4列 */
     @media (max-width: 800px) {
       .hero-content {
         grid-template-columns: 1fr;
@@ -402,7 +399,6 @@
         font-size: 10px;
         bottom: 5px;
       }
-      /* 移动端替代右上角标签 */
       .point.active .point-label::after {
         content: " ✓";
         color: #00ff94;
@@ -413,7 +409,6 @@
       }
     }
 
-    /* 手机小屏适配 */
     @media (max-width: 430px) {
       .container {
         width: 96vw;
@@ -459,16 +454,16 @@
   <main class="container">
     <section class="hero">
       <div class="image-box">
-        <img src="./bannerN.jpg" alt="活动横幅" loading="lazy">
+        <img src="./banner3.jpg" alt="活动横幅" loading="lazy">
       </div>
 
       <div class="hero-content">
         <div>
-          <h1>举手文化成果打卡寻宝SSAM-N</h1>
+          <h1>举手文化成果打卡寻宝SSAM-3</h1>
           <p class="subtitle">
-            每个现场打卡点都有自己的编号。员工用手机 NFC 触碰对应点位SSAM-N后，网页会识别当前点位编号；输入姓名后，该员工已找到的编号会持续点亮。
+            每个现场打卡点都有自己的编号。员工用手机 NFC 触碰对应点位SSAM-3后，网页会识别当前点位编号；输入姓名后，该员工已找到的编号会持续点亮。
           </p>
-          <div class="current-chip" id="currentChip">当前 NFC 点位：N</div>
+          <div class="current-chip" id="currentChip">当前 NFC 点位：3</div>
         </div>
 
         <div class="login-card">
@@ -515,7 +510,7 @@
   <script>
     const TOTAL_POINTS = 20;
     let submitLock = false;
-    const currentPoint = N;
+    const currentPoint = 3;
     const validCurrentPoint = true;
 
     const el = function(id) {
