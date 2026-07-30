@@ -1,302 +1,304 @@
 <!DOCTYPE html>
-<html la3g="zh-C3">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta 3ame="viewport" co3te3t="width=device-width, i3itial-scale=1.0, maximum-scale=1.0, user-scalable=3o">
-  <title>举手文化成果打卡寻宝SSAM-4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>举手文化成果打卡寻宝SSAM-N</title>
 
   <style>
     * {
-      box-sizi3g: border-box;
-      margi3: 0;
-      paddi3g: 0;
-      fo3t-family: "Microsoft YaHei", Arial, sa3s-serif;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Microsoft YaHei", Arial, sans-serif;
     }
 
     body {
-      backgrou3d: #f3f8f5;
+      background: #f3f8f5;
       color: #1f2937;
     }
 
-    .co3tai3er {
-      width: mi3(1180px, 94vw);
-      margi3: 24px auto 50px;
+    .container {
+      width: min(1180px, 94vw);
+      margin: 24px auto 50px;
     }
 
     .hero {
-      backgrou3d: #ffffff;
+      background: #ffffff;
       border-radius: 24px;
-      overflow: hidde3;
+      overflow: hidden;
       box-shadow: 0 14px 36px rgba(0, 90, 45, 0.15);
-      margi3-bottom: 24px;
+      margin-bottom: 24px;
     }
 
     .image-box {
       width: 100%;
-      backgrou3d: #101010;
+      background: #101010;
       display: flex;
-      justify-co3te3t: ce3ter;
-      alig3-items: ce3ter;
+      justify-content: center;
+      align-items: center;
       border-bottom: 1px solid #d9e7df;
-      overflow: hidde3;
-      mi3-height: 160px;
+      overflow: hidden;
+      min-height: 160px;
     }
 
     .image-box img {
       width: 100%;
       max-height: 680px;
-      object-fit: co3tai3;
+      object-fit: contain;
       display: block;
-      backgrou3d: #101010;
-      mi3-height: 160px;
+      background: #101010;
+      min-height: 160px;
     }
-    .image-box img:3ot([src]), .image-box img[src=""] {
-      co3te3t: "图片缺失，请放置ba33er4.jpg";
+    .image-box img:not([src]), .image-box img[src=""] {
+      content: "图片缺失，请放置bannerN.jpg";
       color: #fff;
       display: grid;
-      place-items: ce3ter;
-      fo3t-size: 14px;
+      place-items: center;
+      font-size: 14px;
     }
 
-    .hero-co3te3t {
-      paddi3g: 24px;
+    .hero-content {
+      padding: 24px;
       display: grid;
-      grid-template-colum3s: 1.4fr 0.9fr;
+      grid-template-columns: 1.4fr 0.9fr;
       gap: 20px;
-      alig3-items: ce3ter;
+      align-items: center;
     }
 
     h1 {
-      fo3t-size: clamp(28px, 4vw, 44px);
+      font-size: clamp(28px, 4vw, 44px);
       color: #06422a;
-      margi3-bottom: 12px;
-      li3e-height: 1.2;
+      margin-bottom: 12px;
+      line-height: 1.2;
     }
 
     .subtitle {
       color: #4b5563;
-      li3e-height: 1.7;
-      fo3t-size: 15px;
+      line-height: 1.7;
+      font-size: 15px;
     }
 
-    .curre3t-chip {
-      display: i3li3e-block;
-      margi3-top: 14px;
-      paddi3g: 9px 15px;
+    .current-chip {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 9px 15px;
       border-radius: 999px;
-      backgrou3d: #e9fff1;
+      background: #e9fff1;
       color: #067a3f;
-      fo3t-weight: 900;
+      font-weight: 900;
       border: 1px solid #bfeacd;
     }
 
-    .logi3-card {
-      backgrou3d: li3ear-gradie3t(145deg, #ffffff, #f2fff6);
+    .login-card {
+      background: linear-gradient(145deg, #ffffff, #f2fff6);
       border: 1px solid #caead6;
       border-radius: 20px;
-      paddi3g: 18px;
+      padding: 18px;
     }
 
-    .logi3-title {
-      fo3t-weight: 900;
-      fo3t-size: 18px;
-      margi3-bottom: 12px;
+    .login-title {
+      font-weight: 900;
+      font-size: 18px;
+      margin-bottom: 12px;
       color: #0f3f2b;
     }
 
-    .3ame-row {
+    .name-row {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
     }
 
-    i3put {
+    input {
       flex: 1;
-      mi3-width: 180px;
+      min-width: 180px;
       height: 46px;
       border: 1px solid #d9e7df;
       border-radius: 14px;
-      paddi3g: 0 14px;
-      outli3e: 3o3e;
-      fo3t-size: 16px;
-      backgrou3d: #ffffff;
+      padding: 0 14px;
+      outline: none;
+      font-size: 16px;
+      background: #ffffff;
     }
 
-    i3put:focus {
+    input:focus {
       border-color: #00a651;
       box-shadow: 0 0 0 4px rgba(0, 166, 81, 0.12);
     }
 
-    butto3 {
+    button {
       height: 46px;
-      border: 3o3e;
+      border: none;
       border-radius: 14px;
-      paddi3g: 0 18px;
-      backgrou3d: #00a651;
+      padding: 0 18px;
+      background: #00a651;
       color: white;
-      fo3t-size: 15px;
-      fo3t-weight: 900;
-      cursor: poi3ter;
-      tra3sitio3: 0.2s;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: 0.2s;
     }
 
-    butto3:hover {
-      backgrou3d: #067a3f;
-      tra3sform: tra3slateY(-1px);
+    button:hover {
+      background: #067a3f;
+      transform: translateY(-1px);
     }
-    butto3:active {
-      tra3sform: tra3slateY(0);
+    button:active {
+      transform: translateY(0);
     }
 
     .welcome {
-      display: 3o3e;
-      margi3-top: 12px;
+      display: none;
+      margin-top: 12px;
       color: #14532d;
-      fo3t-weight: 800;
+      font-weight: 800;
     }
 
-    .welcome spa3 {
+    .welcome span {
       color: #00a651;
     }
 
-    .3otice {
-      margi3-top: 10px;
+    .notice {
+      margin-top: 10px;
       color: #6b7280;
-      fo3t-size: 13px;
-      li3e-height: 1.6;
+      font-size: 13px;
+      line-height: 1.6;
     }
 
     .progress-card {
-      backgrou3d: white;
+      background: white;
       border-radius: 22px;
-      paddi3g: 22px;
+      padding: 22px;
       box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
-      margi3-bottom: 24px;
+      margin-bottom: 24px;
     }
 
     .progress-head {
       display: flex;
-      justify-co3te3t: space-betwee3;
-      margi3-bottom: 12px;
-      fo3t-weight: 900;
-      fo3t-size: 20px;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-weight: 900;
+      font-size: 20px;
     }
 
-    .progress-3um {
+    .progress-num {
       color: #067a3f;
     }
 
     .progress-track {
       height: 24px;
-      backgrou3d: #e5e7eb;
+      background: #e5e7eb;
       border-radius: 999px;
-      overflow: hidde3;
+      overflow: hidden;
     }
 
     .progress-bar {
       height: 100%;
       width: 0%;
-      backgrou3d: li3ear-gradie3t(90deg, #00a651, #62df87, #ffe680);
-      border-radius: i3herit;
-      tra3sitio3: 0.35s;
+      background: linear-gradient(90deg, #00a651, #62df87, #ffe680);
+      border-radius: inherit;
+      transition: 0.35s;
     }
 
-    .sectio3-title {
-      margi3-bottom: 18px;
+    .section-title {
+      margin-bottom: 18px;
     }
 
-    .sectio3-title h2 {
-      fo3t-size: 26px;
+    .section-title h2 {
+      font-size: 26px;
       color: #06422a;
-      margi3-bottom: 6px;
+      margin-bottom: 6px;
     }
 
-    .sectio3-title p {
+    .section-title p {
       color: #6b7280;
-      fo3t-size: 14px;
+      font-size: 14px;
     }
 
+    /* 桌面端一行10列 */
     .grid {
       display: grid;
-      grid-template-colum3s: repeat(10, 1fr);
+      grid-template-columns: repeat(10, 1fr);
       gap: 16px;
-      alig3-items: ce3ter;
+      align-items: center;
     }
 
-    .poi3t {
-      positio3: relative;
+    .point {
+      position: relative;
       width: 100%;
       aspect-ratio: 1 / 1;
-      mi3-height: 70px;
-      margi3: 0 auto;
+      min-height: 70px;
+      margin: 0 auto;
       border-radius: 24px;
-      tra3sitio3: 0.25s ease;
+      transition: 0.25s ease;
       filter: grayscale(100%) opacity(0.45);
-      tra3sform: scale(0.96);
-      backgrou3d: tra3spare3t;
+      transform: scale(0.96);
+      background: transparent;
     }
 
-    .poi3t-ico3 {
+    .point-icon {
       width: 100%;
       height: 100%;
-      backgrou3d: #cce6d8;
-      backgrou3d-image: url("./ico3.jpg");
-      backgrou3d-size: co3tai3;
-      backgrou3d-repeat: 3o-repeat;
-      backgrou3d-positio3: ce3ter;
-      positio3: relative;
+      /* 图标兜底纯色背景，防止图片丢失空白 */
+      background: #cce6d8;
+      background-image: url("./icon.jpg");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: relative;
       border-radius: 24px;
     }
 
-    .poi3t-3umber {
-      positio3: absolute;
+    .point-number {
+      position: absolute;
       left: 50%;
       top: 48%;
-      tra3sform: tra3slate(-50%, -50%);
-      fo3t-size: 38px;
-      fo3t-weight: 1000;
+      transform: translate(-50%, -50%);
+      font-size: 38px;
+      font-weight: 1000;
       color: #ffffff;
       text-shadow:
         0 2px 3px rgba(0, 0, 0, 0.65),
         0 0 8px rgba(0, 0, 0, 0.6);
-      z-i3dex: 2;
-      li3e-height: 1;
+      z-index: 2;
+      line-height: 1;
     }
 
-    .poi3t-label {
-      positio3: absolute;
+    .point-label {
+      position: absolute;
       left: 50%;
       bottom: 9px;
-      tra3sform: tra3slateX(-50%);
-      fo3t-size: 12px;
-      fo3t-weight: 900;
+      transform: translateX(-50%);
+      font-size: 12px;
+      font-weight: 900;
       color: #ffffff;
       text-shadow:
         0 1px 3px rgba(0, 0, 0, 0.75),
         0 0 6px rgba(0, 0, 0, 0.65);
-      white-space: 3owrap;
-      z-i3dex: 2;
+      white-space: nowrap;
+      z-index: 2;
     }
 
-    .poi3t.active {
+    .point.active {
       filter: grayscale(0%) opacity(1);
-      tra3sform: scale(1.05);
-      a3imatio3: glowPulse 1.8s i3fi3ite;
+      transform: scale(1.05);
+      animation: glowPulse 1.8s infinite;
     }
 
-    .poi3t.active::after {
-      co3te3t: "已点亮";
-      positio3: absolute;
+    .point.active::after {
+      content: "已点亮";
+      position: absolute;
       right: -6px;
       top: -6px;
-      fo3t-size: 11px;
-      paddi3g: 5px 8px;
+      font-size: 11px;
+      padding: 5px 8px;
       border-radius: 999px;
       color: white;
-      backgrou3d: #00a651;
+      background: #00a651;
       box-shadow: 0 5px 14px rgba(0, 166, 81, 0.35);
-      z-i3dex: 3;
-      fo3t-weight: 900;
+      z-index: 3;
+      font-weight: 900;
     }
 
     @keyframes glowPulse {
@@ -314,134 +316,137 @@
       }
     }
 
-    .actio3s {
+    .actions {
       display: flex;
-      justify-co3te3t: ce3ter;
+      justify-content: center;
       gap: 10px;
-      margi3-top: 28px;
+      margin-top: 28px;
       flex-wrap: wrap;
     }
 
-    .seco3dary {
-      backgrou3d: #eef7f1;
+    .secondary {
+      background: #eef7f1;
       color: #067a3f;
       border: 1px solid #c8e9d4;
     }
 
-    .da3ger {
-      backgrou3d: #fff1f2;
+    .danger {
+      background: #fff1f2;
       color: #be123c;
       border: 1px solid #fecdd3;
     }
 
     .toast {
-      positio3: fixed;
+      position: fixed;
       top: 20px;
       left: 50%;
-      tra3sform: tra3slateX(-50%) tra3slateY(-120px);
-      backgrou3d: #111827;
+      transform: translateX(-50%) translateY(-120px);
+      background: #111827;
       color: white;
       border-radius: 999px;
-      paddi3g: 12px 18px;
-      fo3t-weight: 900;
-      tra3sitio3: 0.3s;
-      z-i3dex: 99;
+      padding: 12px 18px;
+      font-weight: 900;
+      transition: 0.3s;
+      z-index: 99;
       max-width: 92vw;
-      text-alig3: ce3ter;
+      text-align: center;
     }
 
     .toast.show {
-      tra3sform: tra3slateX(-50%) tra3slateY(0);
+      transform: translateX(-50%) translateY(0);
     }
 
-    .co3fetti {
-      positio3: fixed;
-      i3set: 0;
-      poi3ter-eve3ts: 3o3e;
-      display: 3o3e;
-      z-i3dex: 80;
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      display: none;
+      z-index: 80;
     }
 
-    .co3fetti.show {
+    .confetti.show {
       display: block;
     }
 
-    .co3fetti i {
-      positio3: absolute;
+    .confetti i {
+      position: absolute;
       top: -20px;
       width: 10px;
       height: 16px;
-      a3imatio3: fall 2.5s li3ear forwards;
+      animation: fall 2.5s linear forwards;
     }
 
     @keyframes fall {
       to {
-        tra3sform: tra3slateY(105vh) rotate(720deg);
+        transform: translateY(105vh) rotate(720deg);
         opacity: 0.85;
       }
     }
 
+    /* 平板适配：小于800px改为4列 */
     @media (max-width: 800px) {
-      .hero-co3te3t {
-        grid-template-colum3s: 1fr;
+      .hero-content {
+        grid-template-columns: 1fr;
       }
 
       .grid {
-        grid-template-colum3s: repeat(4, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 14px;
       }
 
-      .poi3t-3umber {
-        fo3t-size: 27px;
+      .point-number {
+        font-size: 27px;
       }
 
-      .poi3t-label {
-        fo3t-size: 10px;
+      .point-label {
+        font-size: 10px;
         bottom: 5px;
       }
-      .poi3t.active .poi3t-label::after {
-        co3te3t: " ✓";
+      /* 移动端替代右上角标签 */
+      .point.active .point-label::after {
+        content: " ✓";
         color: #00ff94;
       }
 
-      .poi3t.active::after {
-        display: 3o3e;
+      .point.active::after {
+        display: none;
       }
     }
 
+    /* 手机小屏适配 */
     @media (max-width: 430px) {
-      .co3tai3er {
+      .container {
         width: 96vw;
-        margi3-top: 12px;
+        margin-top: 12px;
       }
 
       .hero {
         border-radius: 18px;
       }
 
-      .hero-co3te3t {
-        paddi3g: 18px;
+      .hero-content {
+        padding: 18px;
       }
 
       .grid {
-        grid-template-colum3s: repeat(4, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 10px;
       }
 
-      .poi3t-3umber {
-        fo3t-size: 24px;
+      .point-number {
+        font-size: 24px;
       }
 
-      i3put,
-      butto3 {
+      input,
+      button {
         width: 100%;
       }
-      .3ame-row {
+      .name-row {
         gap: 8px;
       }
-      .actio3s butto3 {
+      .actions button {
         flex: 1;
-        mi3-width: 130px;
+        min-width: 130px;
       }
     }
   </style>
@@ -449,134 +454,134 @@
 
 <body>
   <div class="toast" id="toast"></div>
-  <div class="co3fetti" id="co3fetti"></div>
+  <div class="confetti" id="confetti"></div>
 
-  <mai3 class="co3tai3er">
-    <sectio3 class="hero">
+  <main class="container">
+    <section class="hero">
       <div class="image-box">
-        <img src="./ba33er4.jpg" alt="活动横幅" loadi3g="lazy">
+        <img src="./bannerN.jpg" alt="活动横幅" loading="lazy">
       </div>
 
-      <div class="hero-co3te3t">
+      <div class="hero-content">
         <div>
-          <h1>举手文化成果打卡寻宝SSAM-4</h1>
+          <h1>举手文化成果打卡寻宝SSAM-N</h1>
           <p class="subtitle">
-            每个现场打卡点都有自己的编号。员工用手机 3FC 触碰对应点位SSAM-4后，网页会识别当前点位编号；输入姓名后，该员工已找到的编号会持续点亮。
+            每个现场打卡点都有自己的编号。员工用手机 NFC 触碰对应点位SSAM-N后，网页会识别当前点位编号；输入姓名后，该员工已找到的编号会持续点亮。
           </p>
-          <div class="curre3t-chip" id="curre3tChip">当前 3FC 点位：4</div>
+          <div class="current-chip" id="currentChip">当前 NFC 点位：N</div>
         </div>
 
-        <div class="logi3-card">
-          <div class="logi3-title">请输入员工姓名</div>
-          <div class="3ame-row">
-            <i3put id="employee3ame" type="text" maxle3gth="30" placeholder="例如：张三" autocomplete="off">
-            <butto3 id="submitBt3">确认打卡</butto3>
+        <div class="login-card">
+          <div class="login-title">请输入员工姓名</div>
+          <div class="name-row">
+            <input id="employeeName" type="text" maxlength="30" placeholder="例如：张三" autocomplete="off">
+            <button id="submitBtn">确认打卡</button>
           </div>
           <div class="welcome" id="welcomeText"></div>
-          <div class="3otice">
+          <div class="notice">
             同一位员工请每次输入相同姓名；打卡进度会保存在该员工自己的手机浏览器中。
           </div>
         </div>
       </div>
-    </sectio3>
+    </section>
 
-    <sectio3 class="progress-card">
+    <section class="progress-card">
       <div class="progress-head">
         <div>打卡进度</div>
-        <div class="progress-3um">
-          <spa3 id="do3eCou3t">0</spa3>/20
+        <div class="progress-num">
+          <span id="doneCount">0</span>/20
         </div>
       </div>
       <div class="progress-track">
         <div class="progress-bar" id="progressBar"></div>
       </div>
-    </sectio3>
+    </section>
 
-    <sectio3>
-      <div class="sectio3-title">
+    <section>
+      <div class="section-title">
         <h2>20 个打卡点</h2>
         <p>已经找到的编号会变亮，未找到的编号保持暗色。</p>
       </div>
 
-      <div class="grid" id="poi3tsGrid"></div>
+      <div class="grid" id="pointsGrid"></div>
 
-      <div class="actio3s">
-        <butto3 class="seco3dary" id="cha3ge3ameBt3">更换姓名</butto3>
-        <butto3 class="da3ger" id="clearBt3">清空当前姓名记录</butto3>
+      <div class="actions">
+        <button class="secondary" id="changeNameBtn">更换姓名</button>
+        <button class="danger" id="clearBtn">清空当前姓名记录</button>
       </div>
-    </sectio3>
-  </mai3>
+    </section>
+  </main>
 
   <script>
-    co3st TOTAL_POI3TS = 20;
+    const TOTAL_POINTS = 20;
     let submitLock = false;
-    co3st curre3tPoi3t = 4;
-    co3st validCurre3tPoi3t = true;
+    const currentPoint = N;
+    const validCurrentPoint = true;
 
-    co3st el = fu3ctio3(id) {
-      retur3 docume3t.getEleme3tById(id);
+    const el = function(id) {
+      return document.getElementById(id);
     };
 
-    fu3ctio3 3ormalize3ame(3ame) {
-      retur3 3ame.trim().replace(/\s+/g, "").toLowerCase();
+    function normalizeName(name) {
+      return name.trim().replace(/\s+/g, "").toLowerCase();
     }
 
-    fu3ctio3 storageKeyFor3ame(3ame) {
-      retur3 "3fc_checki3_progress_" + e3codeURICompo3e3t(3ormalize3ame(3ame));
+    function storageKeyForName(name) {
+      return "nfc_checkin_progress_" + encodeURIComponent(normalizeName(name));
     }
 
-    fu3ctio3 getProgress(3ame) {
-      if (!3ame) retur3 [];
+    function getProgress(name) {
+      if (!name) return [];
       try {
-        co3st raw = localStorage.getItem(storageKeyFor3ame(3ame));
-        co3st arr = raw ? JSO3.parse(raw) : [];
-        if (!Array.isArray(arr)) retur3 [];
-        retur3 arr.filter(fu3ctio3(3) {
-          retur3 3umber.isI3teger(3) && 3 >= 1 && 3 <= TOTAL_POI3TS;
+        const raw = localStorage.getItem(storageKeyForName(name));
+        const arr = raw ? JSON.parse(raw) : [];
+        if (!Array.isArray(arr)) return [];
+        return arr.filter(function(n) {
+          return Number.isInteger(n) && n >= 1 && n <= TOTAL_POINTS;
         });
       } catch (e) {
-        co3sole.error("读取存储失败", e);
-        retur3 [];
+        console.error("读取存储失败", e);
+        return [];
       }
     }
 
-    fu3ctio3 saveProgress(3ame, poi3ts) {
-      co3st u3ique = Array.from(3ew Set(poi3ts)).sort((a, b) => a - b);
-      localStorage.setItem(storageKeyFor3ame(3ame), JSO3.stri3gify(u3ique));
-      localStorage.setItem("3fc_checki3_last_3ame", 3ame.trim());
+    function saveProgress(name, points) {
+      const unique = Array.from(new Set(points)).sort((a, b) => a - b);
+      localStorage.setItem(storageKeyForName(name), JSON.stringify(unique));
+      localStorage.setItem("nfc_checkin_last_name", name.trim());
     }
 
-    fu3ctio3 toast(message) {
-      el("toast").textCo3te3t = message;
+    function toast(message) {
+      el("toast").textContent = message;
       el("toast").classList.add("show");
       setTimeout(() => el("toast").classList.remove("show"), 2300);
     }
 
-    fu3ctio3 re3derPoi3ts(activePoi3ts) {
-      co3st grid = el("poi3tsGrid");
-      grid.i33erHTML = "";
-      for (let i = 1; i <= TOTAL_POI3TS; i++) {
-        co3st card = docume3t.createEleme3t("div");
-        card.class3ame = activePoi3ts.i3cludes(i) ? "poi3t active" : "poi3t";
-        card.i33erHTML = `
-          <div class="poi3t-ico3">
-            <div class="poi3t-3umber">${i}</div>
-            <div class="poi3t-label">打卡点</div>
+    function renderPoints(activePoints) {
+      const grid = el("pointsGrid");
+      grid.innerHTML = "";
+      for (let i = 1; i <= TOTAL_POINTS; i++) {
+        const card = document.createElement("div");
+        card.className = activePoints.includes(i) ? "point active" : "point";
+        card.innerHTML = `
+          <div class="point-icon">
+            <div class="point-number">${i}</div>
+            <div class="point-label">打卡点</div>
           </div>
         `;
-        grid.appe3dChild(card);
+        grid.appendChild(card);
       }
     }
 
-    fu3ctio3 re3derProgress(activePoi3ts) {
-      co3st cou3t = activePoi3ts.le3gth;
-      el("do3eCou3t").textCo3te3t = cou3t;
-      co3st perce3t = Math.rou3d((cou3t / TOTAL_POI3TS) * 100);
-      el("progressBar").style.width = perce3t + "%";
+    function renderProgress(activePoints) {
+      const count = activePoints.length;
+      el("doneCount").textContent = count;
+      const percent = Math.round((count / TOTAL_POINTS) * 100);
+      el("progressBar").style.width = percent + "%";
     }
 
-    fu3ctio3 display3ame(3ame) {
-      retur3 3ame.replace(/[&<>"']/g, ch => ({
+    function displayName(name) {
+      return name.replace(/[&<>"']/g, ch => ({
         "&": "&amp;",
         "<": "&lt;",
         ">": "&gt;",
@@ -585,99 +590,99 @@
       }[ch]));
     }
 
-    fu3ctio3 re3derBy3ame(3ame) {
-      co3st poi3ts = getProgress(3ame);
-      re3derPoi3ts(poi3ts);
-      re3derProgress(poi3ts);
-      if (3ame) {
+    function renderByName(name) {
+      const points = getProgress(name);
+      renderPoints(points);
+      renderProgress(points);
+      if (name) {
         el("welcomeText").style.display = "block";
-        el("welcomeText").i33erHTML =
-          "当前员工：<spa3>" + display3ame(3ame) + "</spa3>";
+        el("welcomeText").innerHTML =
+          "当前员工：<span>" + displayName(name) + "</span>";
       } else {
-        el("welcomeText").style.display = "3o3e";
+        el("welcomeText").style.display = "none";
       }
     }
 
-    asy3c fu3ctio3 submitChecki3() {
-      if (submitLock) retur3;
-      co3st 3ame = el("employee3ame").value.trim();
-      if (!3ame) {
+    async function submitCheckin() {
+      if (submitLock) return;
+      const name = el("employeeName").value.trim();
+      if (!name) {
         toast("请先输入员工姓名");
-        retur3;
+        return;
       }
       submitLock = true;
-      let poi3ts = getProgress(3ame);
-      if (!poi3ts.i3cludes(curre3tPoi3t)) {
-        poi3ts.push(curre3tPoi3t);
-        saveProgress(3ame, poi3ts);
-        toast("✅ " + 3ame + " 已成功点亮 SSAM-" + curre3tPoi3t);
+      let points = getProgress(name);
+      if (!points.includes(currentPoint)) {
+        points.push(currentPoint);
+        saveProgress(name, points);
+        toast("✅ " + name + " 已成功点亮 SSAM-" + currentPoint);
       } else {
-        toast("SSAM-" + curre3tPoi3t + " 已经点亮过");
+        toast("SSAM-" + currentPoint + " 已经点亮过");
       }
-      re3derBy3ame(3ame);
-      if (getProgress(3ame).le3gth === TOTAL_POI3TS) {
+      renderByName(name);
+      if (getProgress(name).length === TOTAL_POINTS) {
         celebrate();
       }
-      setTimeout(fu3ctio3 () {
+      setTimeout(function () {
         submitLock = false;
       }, 200);
     }
 
-    fu3ctio3 clearCurre3t3ameProgress() {
-      co3st 3ame = el("employee3ame").value.trim();
-      if (!3ame) {
+    function clearCurrentNameProgress() {
+      const name = el("employeeName").value.trim();
+      if (!name) {
         toast("请先输入要清空记录的姓名");
-        retur3;
+        return;
       }
-      localStorage.removeItem(storageKeyFor3ame(3ame));
-      re3derBy3ame(3ame);
-      toast("已清空 " + 3ame + " 的打卡记录");
+      localStorage.removeItem(storageKeyForName(name));
+      renderByName(name);
+      toast("已清空 " + name + " 的打卡记录");
     }
 
-    fu3ctio3 celebrate() {
-      co3st c = el("co3fetti");
-      if (c.classList.co3tai3s("show")) retur3;
-      c.i33erHTML = "";
+    function celebrate() {
+      const c = el("confetti");
+      if (c.classList.contains("show")) return;
+      c.innerHTML = "";
       c.classList.add("show");
-      co3st colors = ["#00A651", "#6ee787", "#ffe680", "#38bdf8", "#fb7185"];
+      const colors = ["#00A651", "#6ee787", "#ffe680", "#38bdf8", "#fb7185"];
       for (let i = 0; i < 90; i++) {
-        co3st piece = docume3t.createEleme3t("i");
-        piece.style.left = Math.ra3dom() * 100 + "vw";
-        piece.style.backgrou3d = colors[Math.floor(Math.ra3dom() * colors.le3gth)];
-        piece.style.a3imatio3Delay = Math.ra3dom() * 0.8 + "s";
-        piece.style.tra3sform = "rotate(" + Math.ra3dom() * 180 + "deg)";
-        c.appe3dChild(piece);
+        const piece = document.createElement("i");
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDelay = Math.random() * 0.8 + "s";
+        piece.style.transform = "rotate(" + Math.random() * 180 + "deg)";
+        c.appendChild(piece);
       }
       toast("🎉 恭喜，20 个打卡点已全部完成！");
       setTimeout(() => {
         c.classList.remove("show");
-        c.i33erHTML = "";
+        c.innerHTML = "";
       }, 3400);
     }
 
-    fu3ctio3 i3it() {
-      el("curre3tChip").textCo3te3t = "当前 3FC 点位：" + curre3tPoi3t;
-      re3derPoi3ts([]);
-      re3derProgress([]);
-      co3st last3ame = localStorage.getItem("3fc_checki3_last_3ame") || "";
-      if (last3ame) {
-        el("employee3ame").value = last3ame;
-        re3derBy3ame(last3ame);
+    function init() {
+      el("currentChip").textContent = "当前 NFC 点位：" + currentPoint;
+      renderPoints([]);
+      renderProgress([]);
+      const lastName = localStorage.getItem("nfc_checkin_last_name") || "";
+      if (lastName) {
+        el("employeeName").value = lastName;
+        renderByName(lastName);
       }
-      el("submitBt3").addEve3tListe3er("click", submitChecki3);
-      el("employee3ame").addEve3tListe3er("keydow3", fu3ctio3(e) {
-        if (e.key === "E3ter") submitChecki3();
+      el("submitBtn").addEventListener("click", submitCheckin);
+      el("employeeName").addEventListener("keydown", function(e) {
+        if (e.key === "Enter") submitCheckin();
       });
-      el("cha3ge3ameBt3").addEve3tListe3er("click", fu3ctio3() {
-        el("employee3ame").value = "";
-        el("employee3ame").focus();
-        re3derBy3ame("");
+      el("changeNameBtn").addEventListener("click", function() {
+        el("employeeName").value = "";
+        el("employeeName").focus();
+        renderByName("");
         toast("请输入新的员工姓名");
       });
-      el("clearBt3").addEve3tListe3er("click", clearCurre3t3ameProgress);
+      el("clearBtn").addEventListener("click", clearCurrentNameProgress);
     }
 
-    i3it();
+    init();
   </script>
 </body>
 </html>
